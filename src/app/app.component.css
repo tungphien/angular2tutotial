@@ -1,0 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 90%;
+    margin: auto;
+}
+#stacked-chart-bug{
+    display: block;
+    width: 100%;
+}
