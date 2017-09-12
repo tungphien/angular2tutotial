@@ -6,6 +6,7 @@ import { ChartModule } from 'angular2-highcharts';
 import { AppComponent } from './app.component';
 import { StackedChartCommit } from './charts/stacked-chart-commit';
 import { StackedChartBug } from './charts/stacked-chart-bug';
+import {HeatMapChart} from './charts/heat-map-chart';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -15,7 +16,8 @@ export function highchartsFactory() {
   declarations: [
     AppComponent,
     StackedChartCommit,
-    StackedChartBug
+    StackedChartBug,
+    HeatMapChart
   ],
   imports: [
     BrowserModule,
