@@ -6,7 +6,7 @@ body{
     width: 90%;
     margin: auto;
 }
-#stacked-chart-bug{
+chart{
     display: block;
     width: 100%;
 }

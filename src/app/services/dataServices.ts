@@ -26,9 +26,17 @@ export class DataService {
     params.set('password', "johnldap");
     params.set('branch', "master");
 
+    
+    let headerParams = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
+    headerParams.append('Accept', 'application/json');
+    headerParams.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
+    headerParams.append('Access-Control-Allow-Origin', '*');
+    headerParams.append('Access-Control-Allow-Headers', "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding");
+
     let url = this.BASE_URL + '/commits' + _searchString;
 
-    return this.http.post(url, { search: params })
+    // return this.http.post(url, { body: params, headers: headerParams })
+    return this.http.get("https://restcountries.eu/rest/v2/region/europe")
       .map(res => res.json());
   }
 }

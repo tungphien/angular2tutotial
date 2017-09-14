@@ -1,18 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'stacked-chart-commit',
+    selector: 'stacked-chart-commit-new-enhancement',
     template: `
        <chart [options]="options"></chart>
    `
 })
-export class StackedChartCommit implements OnInit {
-    ngOnInit(): void {
-        console.log("");        
-    }
-    recievedData(data) {
-        console.log('StackedChartCommit', data);       
-    }
+export class StackedChartCommitNewEnhancement {
     constructor() {
         this.options = {
             credits: {
@@ -23,7 +17,7 @@ export class StackedChartCommit implements OnInit {
                 type: 'column'
             },
             title: {
-                text: 'Commits VS Time Line'
+                text: 'Commits VS Time Line (New feature vs Enhancement)'
             },
             xAxis: {
                 categories: ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017']
@@ -66,10 +60,10 @@ export class StackedChartCommit implements OnInit {
                 }
             },
             series: [{
-                name: 'New files',
+                name: 'Commits for new feature',
                 data: [120, 140, 108, 200, 184, 152, 80]
             }, {
-                name: 'Modified files',
+                name: 'Commits for enhancements or bug fixes',
                 data: [180, 210, 162, 300, 276, 228, 120]
             }]
         };

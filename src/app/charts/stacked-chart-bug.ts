@@ -13,10 +13,13 @@ export class StackedChartBug implements OnInit {
     static get parameters() {
         return [[DataService]];
     }
+    recievedData(data){
+        console.log('StackedChartBug', data);       
+    }
     ngOnInit(): any {
         console.log("test")
         this._dataService.getCommits("").subscribe(response => {
-            console.log(response)          
+            console.log(response)
             var i = 0;
             response.forEach(element => {
                 if (i < 10) {
@@ -30,10 +33,10 @@ export class StackedChartBug implements OnInit {
     }
     drawChart(data) {
         console.log("drawChart", data);
-        var categories = [];        
+        var categories = [];
         for (var i = 0; i < data.length; i++) {
             var element = data[i];
-            categories.push(element);           
+            categories.push(element);
         }
         var seriesData = [{
             name: 'New',
@@ -49,11 +52,11 @@ export class StackedChartBug implements OnInit {
             data: [5, 9, 7, 20, 5, 10, 5, 5, 10, 13]
         }]
 
-        this.options = {     
+        this.options = {
             credits: {
                 enabled: false
-            },       
-            colors: ['red', 'blue', 'yellow', 'green', 'pink'],
+            },
+            colors: ['#ffc000','#a5a5a5','#ed7d31','#4472c4'],
             chart: {
                 type: 'column'
 
@@ -104,5 +107,5 @@ export class StackedChartBug implements OnInit {
             series: seriesData
         };
     }
-    constructor(public _dataService: DataService) { }    
+    constructor(public _dataService: DataService) { }
 }
