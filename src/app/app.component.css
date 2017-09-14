@@ -10,3 +10,6 @@ chart{
     display: block;
     width: 100%;
 }
+hr{
+    margin-bottom: 20px;    
+}

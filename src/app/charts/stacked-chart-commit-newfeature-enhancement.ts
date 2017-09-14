@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'stacked-chart-commit-new-enhancement',
@@ -6,21 +6,28 @@ import { Component } from '@angular/core';
        <chart [options]="options"></chart>
    `
 })
-export class StackedChartCommitNewEnhancement {
-    categories= ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017'];
-    series= [{
-        name: 'Commits for new feature',
-        data: [120, 140, 108, 200, 184, 152, 80]
-    }, {
-        name: 'Commits for enhancements or bug fixes',
-        data: [180, 210, 162, 300, 276, 228, 120]
-    }]
-    constructor() {
+export class StackedChartCommitNewEnhancement implements OnInit {
+    ngOnInit(): void {
+        this.drawChart("");
+    }
+    recievedData(data) {
+        console.log('StackedChartCommitNewEnhancement', data);
+        this.drawChart("");
+    }
+    drawChart(data) {
+        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
+        let series = [{
+            name: 'Commits for new feature',
+            data: [120, 140, 108, 200, 184, 152, 80]
+        }, {
+            name: 'Commits for enhancements or bug fixes',
+            data: [180, 210, 162, 300, 276, 228, 120]
+        }]
         this.options = {
             credits: {
                 enabled: false
             },
-            colors: ['#ed7d31','#4472c4'],
+            colors: ['#ed7d31', '#4472c4'],
             chart: {
                 type: 'column'
             },
@@ -28,7 +35,7 @@ export class StackedChartCommitNewEnhancement {
                 text: 'Commits VS Time Line (New feature vs Enhancement)'
             },
             xAxis: {
-                categories: this.categories
+                categories: categories
             },
             yAxis: {
                 min: 0,
@@ -67,8 +74,10 @@ export class StackedChartCommitNewEnhancement {
                     }
                 }
             },
-            series:this.series
+            series: series
         };
     }
+
+    constructor() { }
     options: Object;
 }

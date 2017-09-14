@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'stacked-chart-commit-size',
@@ -6,21 +6,28 @@ import { Component } from '@angular/core';
        <chart [options]="options"></chart>
    `
 })
-export class StackedChartCommitSize {
-    categories= ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017'];
-    series= [{
-        name: 'New lines',
-        data: [120, 140, 108, 200, 184, 152, 80]
-    }, {
-        name: 'Modified lines',
-        data: [180, 210, 162, 300, 276, 228, 120]
-    }];
-    constructor() {
+export class StackedChartCommitSize implements OnInit {
+    ngOnInit(): void {
+        this.drawChart("");
+    }
+    recievedData(data) {
+        console.log('StackedChartCommitSize', data);
+        this.drawChart("");
+    }
+    drawChart(data) {
+        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
+        let series = [{
+            name: 'New lines',
+            data: [120, 140, 108, 200, 184, 152, 80]
+        }, {
+            name: 'Modified lines',
+            data: [180, 210, 162, 300, 276, 228, 120]
+        }];
         this.options = {
             credits: {
                 enabled: false
             },
-            colors: ['#ed7d31','#4472c4'],
+            colors: ['#ed7d31', '#4472c4'],
             chart: {
                 type: 'column'
             },
@@ -28,7 +35,7 @@ export class StackedChartCommitSize {
                 text: 'Timelines VS commit size'
             },
             xAxis: {
-                categories: this.categories
+                categories: categories
             },
             yAxis: {
                 min: 0,
@@ -67,8 +74,9 @@ export class StackedChartCommitSize {
                     }
                 }
             },
-            series:this.series
+            series: series
         };
     }
+    constructor() { }
     options: Object;
 }

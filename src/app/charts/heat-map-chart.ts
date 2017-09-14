@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'heat-map-chart',
@@ -6,8 +6,15 @@ import { Component } from '@angular/core';
        <chart [options]="options"></chart>
    `
 })
-export class HeatMapChart {
-    constructor() {
+export class HeatMapChart implements OnInit{
+    ngOnInit(): void {
+        this.drawChart("");
+    }
+    recievedData(data) {
+        console.log('HeatMapChart', data);
+       
+    }
+    drawChart(data) {
         this.options = {
             credits: {
                 enabled: false
@@ -18,27 +25,27 @@ export class HeatMapChart {
                 marginBottom: 80,
                 plotBorderWidth: 1
             },
-        
-        
+
+
             title: {
                 text: 'Sales per employee per weekday'
             },
-        
+
             xAxis: {
                 categories: ['Alexander', 'Marie', 'Maximilian', 'Sophia', 'Lukas', 'Maria', 'Leon', 'Anna', 'Tim', 'Laura']
             },
-        
+
             yAxis: {
                 categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 title: null
             },
-        
+
             colorAxis: {
                 min: 0,
                 minColor: '#FFFFFF',
                 maxColor: '#343434'
             },
-        
+
             legend: {
                 align: 'right',
                 layout: 'vertical',
@@ -47,14 +54,14 @@ export class HeatMapChart {
                 y: 25,
                 symbolHeight: 280
             },
-        
+
             tooltip: {
                 formatter: function () {
                     return '<b>' + this.series.xAxis.categories[this.point.x] + '</b> sold <br><b>' +
                         this.point.value + '</b> items on <br><b>' + this.series.yAxis.categories[this.point.y] + '</b>';
                 }
             },
-        
+
             series: [{
                 name: 'Sales per employee',
                 borderWidth: 1,
@@ -66,5 +73,6 @@ export class HeatMapChart {
             }]
         };
     }
+    constructor() { }
     options: Object;
 }

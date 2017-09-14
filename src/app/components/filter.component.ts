@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { StackedChartBug } from '../charts/stacked-chart-bug';
 import { StackedChartCommit } from '../charts/stacked-chart-commit';
+import { StackedChartCommitSize } from '../charts/stacked-chart-commit-size';
+import { StackedChartCommitNewEnhancement } from '../charts/stacked-chart-commit-newfeature-enhancement';
+import { HeatMapChart } from '../charts/heat-map-chart';
 
 @Component({
     selector: 'filter-component',
@@ -9,7 +12,7 @@ import { StackedChartCommit } from '../charts/stacked-chart-commit';
 })
 export class Filter implements OnInit {
     static get parameters() {
-        return [[StackedChartCommit]];
+        return [[StackedChartCommit],[StackedChartBug],[StackedChartCommitSize],[StackedChartCommitNewEnhancement],[HeatMapChart]];
     }
     reposModel: number[];
     repos: IMultiSelectOption[];
@@ -32,7 +35,11 @@ export class Filter implements OnInit {
         filterModel['usersModel']=this.usersModel;
         console.log(filterModel);
         
-        this._stackedChartCommit.recievedData(filterModel);      
+        this._stackedChartCommit.recievedData(filterModel);   
+        this._stackedChartBug.recievedData(filterModel); 
+        this._stackedChartCommitSize.recievedData(filterModel); 
+        this._stackedChartCommitNewEnhancement.recievedData(filterModel); 
+        this._heatMapChart.recievedData(filterModel); 
     }
 
     ngOnInit() {
@@ -82,5 +89,5 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(public _stackedChartCommit: StackedChartCommit) { }
+    constructor(private _stackedChartCommit: StackedChartCommit, private _stackedChartBug: StackedChartBug, private _stackedChartCommitSize: StackedChartCommitSize, private _stackedChartCommitNewEnhancement: StackedChartCommitNewEnhancement, private _heatMapChart: HeatMapChart) { }
 }

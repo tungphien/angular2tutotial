@@ -13,11 +13,11 @@ export class StackedChartBug implements OnInit {
     static get parameters() {
         return [[DataService]];
     }
-    recievedData(data){
-        console.log('StackedChartBug', data);       
+    recievedData(data) {
+        console.log('StackedChartBug', data);
+
     }
     ngOnInit(): any {
-        console.log("test")
         this._dataService.getCommits("").subscribe(response => {
             console.log(response)
             var i = 0;
@@ -56,7 +56,7 @@ export class StackedChartBug implements OnInit {
             credits: {
                 enabled: false
             },
-            colors: ['#ffc000','#a5a5a5','#ed7d31','#4472c4'],
+            colors: ['#ffc000', '#a5a5a5', '#ed7d31', '#4472c4'],
             chart: {
                 type: 'column'
 
