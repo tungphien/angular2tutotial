@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
    `
 })
 export class StackedChartCommit implements OnInit {
+    categories= ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017'];
+    series= [{
+        name: 'New files',
+        data: [120, 140, 108, 200, 184, 152, 80]
+    }, {
+        name: 'Modified files',
+        data: [180, 210, 162, 300, 276, 228, 120]
+    }];
     ngOnInit(): void {
         console.log("");        
     }
@@ -26,7 +34,7 @@ export class StackedChartCommit implements OnInit {
                 text: 'Commits VS Time Line'
             },
             xAxis: {
-                categories: ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017']
+                categories: this.categories
             },
             yAxis: {
                 min: 0,
@@ -65,13 +73,7 @@ export class StackedChartCommit implements OnInit {
                     }
                 }
             },
-            series: [{
-                name: 'New files',
-                data: [120, 140, 108, 200, 184, 152, 80]
-            }, {
-                name: 'Modified files',
-                data: [180, 210, 162, 300, 276, 228, 120]
-            }]
+            series: this.series
         };
     }
     options: Object;

@@ -7,6 +7,14 @@ import { Component } from '@angular/core';
    `
 })
 export class StackedChartCommitSize {
+    categories= ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017'];
+    series= [{
+        name: 'New lines',
+        data: [120, 140, 108, 200, 184, 152, 80]
+    }, {
+        name: 'Modified lines',
+        data: [180, 210, 162, 300, 276, 228, 120]
+    }];
     constructor() {
         this.options = {
             credits: {
@@ -20,7 +28,7 @@ export class StackedChartCommitSize {
                 text: 'Timelines VS commit size'
             },
             xAxis: {
-                categories: ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017','9/6/2017', '9/7/2017']
+                categories: this.categories
             },
             yAxis: {
                 min: 0,
@@ -59,13 +67,7 @@ export class StackedChartCommitSize {
                     }
                 }
             },
-            series: [{
-                name: 'New lines',
-                data: [120, 140, 108, 200, 184, 152, 80]
-            }, {
-                name: 'Modified lines',
-                data: [180, 210, 162, 300, 276, 228, 120]
-            }]
+            series:this.series
         };
     }
     options: Object;
