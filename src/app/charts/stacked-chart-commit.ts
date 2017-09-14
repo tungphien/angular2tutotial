@@ -9,6 +9,9 @@ import { Component } from '@angular/core';
 export class StackedChartCommit {
     constructor() {
         this.options = {
+            credits: {
+                enabled: false
+            },
             colors:['#ed7d31','#4472c4'],
             chart: {
                 type: 'column'

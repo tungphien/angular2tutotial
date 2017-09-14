@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'stacked-chart-bug',
@@ -6,24 +7,52 @@ import { Component } from '@angular/core';
        <chart id="stacked-chart-bug" [options]="options"></chart>
    `
 })
-export class StackedChartBug {  
-    categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017', '9/8/2017', '9/9/2017', '9/10/2017', '9/11/2017', '9/12/2017', '9/13/2017', '9/14/2017', '9/15/2017', '9/16/2017', '9/17/2017', '9/18/2017', '9/19/2017', '9/20/2017', '9/21/2017'];
-    seriesData = [{
-        name: 'New',
-        data: [5, 10, 13, 15, 10, 5, 12, 5, 10, 13, 15, 10, 5, 12, 5, 10, 13, 15, 10, 5, 12]
-    }, {
-        name: 'Resolved',
-        data: [5, 10, 20, 15, 5, 7, 8, 5, 10, 13, 15, 10, 5, 12, 5, 10, 13, 15, 10, 5, 12]
-    }, {
-        name: 'In Progress',
-        data: [5, 11, 10, 10, 10, 8, 15, 5, 10, 13, 15, 10, 5, 12, 5, 10, 13, 15, 10, 5, 12]
-    }, {
-        name: 'Fixed',
-        data: [5, 9, 7, 20, 5, 10, 5, 5, 10, 13, 15, 10, 5, 12, 5, 10, 13, 15, 10, 5, 12]
-    }]
-    constructor() {
-        this.options = {
+export class StackedChartBug implements OnInit {
+    options: Object;
+    resultArray = [];
+    static get parameters() {
+        return [[DataService]];
+    }
+    ngOnInit(): any {
+        console.log("test")
+        this._dataService.getCommits("").subscribe(response => {
+            console.log(response)          
+            var i = 0;
+            response.forEach(element => {
+                if (i < 10) {
+                    console.log("element", element);
+                    this.resultArray.push(element['alpha3Code'])
+                }
+                i++;
+            });
+            this.drawChart(this.resultArray);
+        });
+    }
+    drawChart(data) {
+        console.log("drawChart", data);
+        var categories = [];        
+        for (var i = 0; i < data.length; i++) {
+            var element = data[i];
+            categories.push(element);           
+        }
+        var seriesData = [{
+            name: 'New',
+            data: [5, 10, 13, 15, 10, 5, 12, 5, 10, 13]
+        }, {
+            name: 'Resolved',
+            data: [5, 10, 20, 15, 5, 7, 8, 5, 10, 13]
+        }, {
+            name: 'In Progress',
+            data: [5, 11, 10, 10, 10, 8, 15, 5, 10, 13]
+        }, {
+            name: 'Fixed',
+            data: [5, 9, 7, 20, 5, 10, 5, 5, 10, 13]
+        }]
 
+        this.options = {     
+            credits: {
+                enabled: false
+            },       
             colors: ['red', 'blue', 'yellow', 'green', 'pink'],
             chart: {
                 type: 'column'
@@ -33,7 +62,7 @@ export class StackedChartBug {
                 text: 'Bugs VS Timeline'
             },
             xAxis: {
-                categories: this.categories
+                categories: categories
             },
             yAxis: {
                 min: 0,
@@ -72,8 +101,8 @@ export class StackedChartBug {
                     }
                 }
             },
-            series: this.seriesData
+            series: seriesData
         };
     }
-    options: Object;
+    constructor(public _dataService: DataService) { }    
 }

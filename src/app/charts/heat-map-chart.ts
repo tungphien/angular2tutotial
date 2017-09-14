@@ -9,6 +9,9 @@ import { Component } from '@angular/core';
 export class HeatMapChart {
     constructor() {
         this.options = {
+            credits: {
+                enabled: false
+            },
             chart: {
                 type: 'heatmap',
                 marginTop: 40,
