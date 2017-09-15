@@ -1,5 +1,3 @@
-import '../node_modules/zone.js';
-import '../node_modules/reflect-metadata';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

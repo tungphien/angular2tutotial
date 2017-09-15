@@ -19,10 +19,10 @@ import { TranserData } from './services/transerData.service';
 
 declare var require: any;
 export function highchartsFactory() {
-  // const highcharts=require('highcharts');
-  // const highchartsMore=require('highcharts/highcharts-more');
+  const highcharts = require('highcharts');
+  //const highchartsMore=require('./../../node_modules/highcharts/highcharts-more.js');
   // highchartsMore(highcharts);
-  return require('highcharts');
+  return highcharts;
 }
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ export function highchartsFactory() {
   providers: [{
     provide: HighchartsStatic,
     useFactory: highchartsFactory
-  }, DataService,TranserData, StackedChartBug, StackedChartCommit, StackedChartCommitSize, StackedChartCommitNewEnhancement, HeatMapChart],
+  }, DataService, TranserData, StackedChartBug, StackedChartCommit, StackedChartCommitSize, StackedChartCommitNewEnhancement, HeatMapChart],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
