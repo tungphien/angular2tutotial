@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
-import { StackedChartBug } from '../charts/stacked-chart-bug';
-import { StackedChartCommit } from '../charts/stacked-chart-commit';
-import { StackedChartCommitSize } from '../charts/stacked-chart-commit-size';
-import { StackedChartCommitNewEnhancement } from '../charts/stacked-chart-commit-newfeature-enhancement';
-import { HeatMapChart } from '../charts/heat-map-chart';
+import { TranserData } from '../services/transerData.service';
 
 @Component({
     selector: 'filter-component',
@@ -12,7 +8,7 @@ import { HeatMapChart } from '../charts/heat-map-chart';
 })
 export class Filter implements OnInit {
     static get parameters() {
-        return [[StackedChartCommit],[StackedChartBug],[StackedChartCommitSize],[StackedChartCommitNewEnhancement],[HeatMapChart]];
+        return [[TranserData]];
     }
     reposModel: number[];
     repos: IMultiSelectOption[];
@@ -26,38 +22,34 @@ export class Filter implements OnInit {
         this[key] = value;
         console.log(this[key]);
     }
-    generateChart() {        
-        let filterModel={};
-        filterModel['startDate']=this.startDate;
-        filterModel['endDate']=this.endDate;
-        filterModel['reposModel']=this.reposModel;
-        filterModel['branchesModel']=this.branchesModel;
-        filterModel['usersModel']=this.usersModel;
+    generateChart() {
+        let filterModel = {};
+        filterModel['startDate'] = this.startDate;
+        filterModel['endDate'] = this.endDate;
+        filterModel['reposModel'] = this.reposModel;
+        filterModel['branchesModel'] = this.branchesModel;
+        filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
-        
-        this._stackedChartCommit.recievedData(filterModel);   
-        this._stackedChartBug.recievedData(filterModel); 
-        this._stackedChartCommitSize.recievedData(filterModel); 
-        this._stackedChartCommitNewEnhancement.recievedData(filterModel); 
-        this._heatMapChart.recievedData(filterModel); 
+
+        this._transerData.updateFilterData(filterModel);
     }
 
     ngOnInit() {
         this.repos = [
-            { id: 1, name: 'Resporitory 1' },
+            { id:'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
             { id: 2, name: 'Resporitory 2' },
             { id: 3, name: 'Resporitory 3' },
             { id: 4, name: 'Resporitory 4' },
         ];
         this.branches = [
-            { id: 1, name: 'Resporitory 1: master' },
+            { id: 'master', name: 'Nutanix gerrit local: master' },
             { id: 2, name: 'Resporitory 1: Branches 1' },
             { id: 3, name: 'Resporitory 2: master' },
             { id: 4, name: 'Resporitory 2: Branches 1' },
             { id: 5, name: 'Resporitory 2: Branches 2' },
         ];
         this.users = [
-            { id: 1, name: 'Resporitory 1: User 1' },
+            { id: 1, name: 'Nutanix gerrit local: User 1' },
             { id: 2, name: 'Resporitory 1: User 2' },
             { id: 3, name: 'Resporitory 2: User 1' },
             { id: 4, name: 'Resporitory 2: User 2' },
@@ -73,7 +65,7 @@ export class Filter implements OnInit {
         enableSearch: true,
         // checkedStyle: 'fontawesome',
         buttonClasses: 'btn btn-default btn-block',
-        dynamicTitleMaxItems: 2,
+        dynamicTitleMaxItems: 1,
         displayAllSelectedText: true
     };
 
@@ -89,5 +81,5 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(private _stackedChartCommit: StackedChartCommit, private _stackedChartBug: StackedChartBug, private _stackedChartCommitSize: StackedChartCommitSize, private _stackedChartCommitNewEnhancement: StackedChartCommitNewEnhancement, private _heatMapChart: HeatMapChart) { }
+    constructor(private _transerData: TranserData) { }
 }

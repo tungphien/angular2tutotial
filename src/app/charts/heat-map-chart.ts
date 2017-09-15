@@ -10,10 +10,10 @@ export class HeatMapChart implements OnInit{
     ngOnInit(): void {
         this.drawChart("");
     }
-    recievedData(data) {
-        console.log('HeatMapChart', data);
+    // recievedData(data) {
+    //     console.log('HeatMapChart', data);
        
-    }
+    // }
     drawChart(data) {
         this.options = {
             credits: {

@@ -15,6 +15,7 @@ import { StackedChartCommitNewEnhancement } from './charts/stacked-chart-commit-
 import { HeatMapChart } from './charts/heat-map-chart';
 import { Filter } from './components/filter.component';
 import { DataService } from './services/dataServices';
+import { TranserData } from './services/transerData.service';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -44,7 +45,7 @@ export function highchartsFactory() {
   providers: [{
     provide: HighchartsStatic,
     useFactory: highchartsFactory
-  }, DataService, StackedChartBug, StackedChartCommit, StackedChartCommitSize, StackedChartCommitNewEnhancement, HeatMapChart],
+  }, DataService,TranserData, StackedChartBug, StackedChartCommit, StackedChartCommitSize, StackedChartCommitNewEnhancement, HeatMapChart],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
