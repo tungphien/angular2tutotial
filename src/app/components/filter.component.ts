@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { TranserData } from '../services/transerData.service';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'filter-component',
@@ -8,7 +9,7 @@ import { TranserData } from '../services/transerData.service';
 })
 export class Filter implements OnInit {
     static get parameters() {
-        return [[TranserData]];
+        return [[TranserData], [DataService]];
     }
     reposModel: number[];
     repos: IMultiSelectOption[];
@@ -30,13 +31,19 @@ export class Filter implements OnInit {
         filterModel['branchesModel'] = this.branchesModel;
         filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
-
-        this._transerData.updateFilterData(filterModel);
+        this._dataService.getCurrentTime(filterModel).subscribe(res => {
+            this._transerData.updateChartCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );        
     }
 
     ngOnInit() {
         this.repos = [
-            { id:'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
+            { id: 'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
             { id: 2, name: 'Resporitory 2' },
             { id: 3, name: 'Resporitory 3' },
             { id: 4, name: 'Resporitory 4' },
@@ -81,5 +88,5 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(private _transerData: TranserData) { }
+    constructor(private _transerData: TranserData, private _dataService: DataService) { }
 }

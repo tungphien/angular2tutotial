@@ -92,7 +92,10 @@ export class StackedChartCommit implements OnInit {
             name: 'Modified files',
             data: [80, 20, 62, 30, 26, 28, 20]
         }];
-        this._transferData.filterDataSubject.subscribe(data => this.options=this.bindChartOption(categories,series) );
+        this._transferData.chartCommitDataSubject.subscribe(data => {
+            this.options = this.bindChartOption(categories, series),
+                this.a = data['time']
+        });
     }
 
     constructor(private _transferData: TranserData) { }

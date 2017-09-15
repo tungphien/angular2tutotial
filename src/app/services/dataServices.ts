@@ -17,6 +17,10 @@ export class DataService {
   constructor(private http: Http) {
 
   }
+  getCurrentTime(filterData){
+    console.log('getCurrentTime',filterData);
+     return this.http.get("http://date.jsontest.com/").map(res=> res.json());    
+  }
 
   getCommits(_searchString) {
 
