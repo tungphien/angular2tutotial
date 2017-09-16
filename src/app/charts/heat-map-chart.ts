@@ -43,7 +43,7 @@ export class HeatMapChart implements OnInit{
             colorAxis: {
                 min: 0,
                 minColor: '#FFFFFF',
-                maxColor: '#343434'
+                maxColor: '#4472c4'
             },
 
             legend: {
