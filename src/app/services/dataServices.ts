@@ -17,9 +17,9 @@ export class DataService {
   constructor(private http: Http) {
 
   }
-  getCurrentTime(filterData){
-    console.log('getCurrentTime',filterData);
-     return this.http.get("http://date.jsontest.com/").map(res=> res.json());    
+  getCurrentTime(filterData) {
+    console.log('getCurrentTime', filterData);
+    return this.http.get("http://date.jsontest.com/").map(res => res.json());
   }
 
   getCommits(_searchString) {
@@ -30,7 +30,7 @@ export class DataService {
     params.set('password', "johnldap");
     params.set('branch', "master");
 
-    
+
     let headerParams = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
     headerParams.append('Accept', 'application/json');
     headerParams.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
@@ -39,8 +39,20 @@ export class DataService {
 
     let url = this.BASE_URL + '/commits' + _searchString;
 
-    // return this.http.post(url, { body: params, headers: headerParams })
-    return this.http.get("https://restcountries.eu/rest/v2/region/europe")
+    var req = {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      data: {
+        url: "http://10.20.15.80:8080/a/Nutanix",
+        username: "john",
+        password: "johnldap",
+        branch: "master"
+      }
+    }
+
+    return this.http.post('http://127.0.0.1:5000/commits', req)
+      //return this.http.get("https://restcountries.eu/rest/v2/region/europe")
       .map(res => res.json());
   }
 }

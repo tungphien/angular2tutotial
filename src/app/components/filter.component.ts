@@ -41,7 +41,7 @@ export class Filter implements OnInit {
         );        
     }
 
-    ngOnInit() {
+    ngOnInit() {       
         this.repos = [
             { id: 'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
             { id: 2, name: 'Resporitory 2' },
