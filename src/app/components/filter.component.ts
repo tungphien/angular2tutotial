@@ -47,6 +47,24 @@ export class Filter implements OnInit {
                 console.log("Finish");
             }
         );
+
+        this._dataService.getLineChangeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
+            this._transferData.updateLineChangeOfCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );
+
+        this._dataService.getJiraTypeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
+            this._transferData.updateJiraTypeOfCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );
     }
 
     ngOnInit() {
