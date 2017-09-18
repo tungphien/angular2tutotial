@@ -20,8 +20,7 @@ export class Filter implements OnInit {
 
     startDate; endDate;
     onInputChange(value: string, key: string) {
-        this[key] = value;
-        console.log(this[key]);
+        this[key] = value;       
     }
     generateChart() {
         let filterModel = {};
@@ -31,17 +30,26 @@ export class Filter implements OnInit {
         filterModel['branchesModel'] = this.branchesModel;
         filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
-        this._dataService.getCurrentTime(filterModel).subscribe(res => {
-            this._transerData.updateChartCommitData(res);
+        this._dataService.getFilesChangeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
+            this._transferData.updateChartFileChangeCommitData(res);
         },
             error => alert("error"),
             () => {
                 console.log("Finish");
             }
-        );        
+        );
+
+        this._dataService.getJiraStatusOfCommits(JSON.stringify(filterModel)).subscribe(res => {
+            this._transferData.updateChartJiraStatusCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );
     }
 
-    ngOnInit() {       
+    ngOnInit() {
         this.repos = [
             { id: 'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
             { id: 2, name: 'Resporitory 2' },
@@ -88,5 +96,5 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(private _transerData: TranserData, private _dataService: DataService) { }
+    constructor(private _transferData: TranserData, private _dataService: DataService) { }
 }

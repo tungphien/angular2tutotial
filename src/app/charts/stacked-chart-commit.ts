@@ -1,29 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { TranserData } from '../services/transerData.service';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'stacked-chart-commit',
     template: `
-       <chart [options]="options"></chart>    
-       <div>{{a}}</div>
+       <chart [options]="options"></chart> 
    `
 })
-export class StackedChartCommit implements OnInit {
-    a: any = "hello";
-    recievedData(data) {
-        console.log('StackedChartCommit', data);
-        //this.drawChart("");
-    }
+export class StackedChartCommit implements OnInit {  
+   
     drawChart(data) {
-        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
-        let series = [{
-            name: 'New files',
-            data: [120, 140, 108, 200, 184, 152, 80]
-        }, {
-            name: 'Modified files',
-            data: [180, 210, 162, 300, 276, 228, 120]
-        }];
+        let categories = [];
+        let series = [];
         this.options = this.bindChartOption(categories, series);
     }
     bindChartOption(categories, series) {
@@ -84,20 +74,28 @@ export class StackedChartCommit implements OnInit {
 
     ngOnInit(): void {
         this.drawChart("");
-        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
-        let series = [{
-            name: 'New files',
-            data: [12, 10, 10, 20, 84, 12, 80]
-        }, {
-            name: 'Modified files',
-            data: [80, 20, 62, 30, 26, 28, 20]
-        }];
-        this._transferData.chartCommitDataSubject.subscribe(data => {
-            this.options = this.bindChartOption(categories, series),
-                this.a = data['time']
+        let categories = [];
+        let series = [];
+        this._transferData.fileChangeCommitDataSubject.subscribe(res => {
+            this.options = this.bindChartOption(res.dates, res.datas)
         });
     }
 
-    constructor(private _transferData: TranserData) { }
+    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
+        let defaultFilter = {};
+        defaultFilter['startDate'] = '';
+        defaultFilter['endDate'] = '';
+        defaultFilter['reposModel'] = '';
+        defaultFilter['branchesModel'] = '';
+        defaultFilter['usersModel'] ='';
+        this._dataService.getFilesChangeOfCommits(JSON.stringify(defaultFilter)).subscribe(res => {
+            this._transferData.updateChartFileChangeCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );
+    }
     options: Object;
 }

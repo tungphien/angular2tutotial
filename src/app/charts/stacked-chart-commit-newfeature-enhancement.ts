@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TranserData } from '../services/transerData.service';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'stacked-chart-commit-new-enhancement',
@@ -7,23 +9,14 @@ import { Component, OnInit } from '@angular/core';
    `
 })
 export class StackedChartCommitNewEnhancement implements OnInit {
-    ngOnInit(): void {
-        this.drawChart("");
-    }
-    recievedData(data) {
-        console.log('StackedChartCommitNewEnhancement', data);
-        this.drawChart("");
-    }
+    
     drawChart(data) {
-        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
-        let series = [{
-            name: 'Commits for new feature',
-            data: [120, 140, 108, 200, 184, 152, 80]
-        }, {
-            name: 'Commits for enhancements or bug fixes',
-            data: [180, 210, 162, 300, 276, 228, 120]
-        }]
-        this.options = {
+        let categories = [];
+        let series = [];
+        this.options = this.bindChartOption(categories, series);
+    }
+    bindChartOption(categories, series) {
+        return {
             credits: {
                 enabled: false
             },
@@ -78,6 +71,30 @@ export class StackedChartCommitNewEnhancement implements OnInit {
         };
     }
 
-    constructor() { }
+    ngOnInit(): void {
+        this.drawChart("");
+        let categories = [];
+        let series = [];
+        this._transferData.jiraTypeOfCommitDataSubject.subscribe(res => {
+            this.options = this.bindChartOption(res.dates, res.datas)
+        });
+    }
+
+    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
+        let defaultFilter = {};
+        defaultFilter['startDate'] = '';
+        defaultFilter['endDate'] = '';
+        defaultFilter['reposModel'] = '';
+        defaultFilter['branchesModel'] = '';
+        defaultFilter['usersModel'] ='';
+        this._dataService.getJiraTypeOfCommits(JSON.stringify(defaultFilter)).subscribe(res => {
+            this._transferData.updateJiraTypeOfCommitData(res);
+        },
+            error => alert("error: getJiraTypeOfCommits"),
+            () => {
+                console.log("Finish");
+            }
+        );
+    }
     options: Object;
 }

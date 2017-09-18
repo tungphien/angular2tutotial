@@ -22,37 +22,71 @@ export class DataService {
     return this.http.get("http://date.jsontest.com/").map(res => res.json());
   }
 
-  getCommits(_searchString) {
-
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('url', "http://10.20.15.80:8080/a/Nutanix");
-    params.set('username', "john");
-    params.set('password', "johnldap");
-    params.set('branch', "master");
-
-
-    let headerParams = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
-    headerParams.append('Accept', 'application/json');
-    headerParams.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT');
-    headerParams.append('Access-Control-Allow-Origin', '*');
-    headerParams.append('Access-Control-Allow-Headers', "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding");
-
-    let url = this.BASE_URL + '/commits' + _searchString;
-
+  getFilesChangeOfCommits(data) {   
+    let url = this.BASE_URL + '/filesChangeOfCommits';
+    let filterData = JSON.parse(data);
     var req = {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8'
-      },
-      data: {
-        url: "http://10.20.15.80:8080/a/Nutanix",
-        username: "john",
-        password: "johnldap",
-        branch: "master"
-      }
+      url: "http://10.20.15.80:8080/a/Nutanix",
+      username: "john",
+      password: "johnldap",
+      branch: filterData['branchesModel'],
+      user: filterData['usersModel'],
+      startdate: filterData['startDate'],
+      enddate: filterData['endDate']
     }
+    
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
+  
+  getJiraStatusOfCommits(data) {   
+    let url = this.BASE_URL + '/jiraStatusOfCommits';
+    let filterData = JSON.parse(data);
+    var req = {
+      url: "http://10.20.15.80:8080/a/Nutanix",
+      username: "john",
+      password: "johnldap",
+      branch: filterData['branchesModel'],
+      user: filterData['usersModel'],
+      startdate: filterData['startDate'],
+      enddate: filterData['endDate']
+    }
+    
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
 
-    return this.http.post('http://127.0.0.1:5000/commits', req)
-      //return this.http.get("https://restcountries.eu/rest/v2/region/europe")
+  getLineChangeOfCommits(data) {   
+    let url = this.BASE_URL + '/linesChangeOfCommits';
+    let filterData = JSON.parse(data);
+    var req = {
+      url: "http://10.20.15.80:8080/a/Nutanix",
+      username: "john",
+      password: "johnldap",
+      branch: filterData['branchesModel'],
+      user: filterData['usersModel'],
+      startdate: filterData['startDate'],
+      enddate: filterData['endDate']
+    }
+    
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
+
+  getJiraTypeOfCommits(data) {   
+    let url = this.BASE_URL + '/jiraTypeOfCommits';
+    let filterData = JSON.parse(data);
+    var req = {
+      url: "http://10.20.15.80:8080/a/Nutanix",
+      username: "john",
+      password: "johnldap",
+      branch: filterData['branchesModel'],
+      user: filterData['usersModel'],
+      startdate: filterData['startDate'],
+      enddate: filterData['endDate']
+    }
+    
+    return this.http.post(url, req)
       .map(res => res.json());
   }
 }

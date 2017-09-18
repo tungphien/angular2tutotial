@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TranserData } from '../services/transerData.service';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'stacked-chart-commit-size',
@@ -7,23 +9,14 @@ import { Component, OnInit } from '@angular/core';
    `
 })
 export class StackedChartCommitSize implements OnInit {
-    ngOnInit(): void {
-        this.drawChart("");
-    }
-    recievedData(data) {
-        console.log('StackedChartCommitSize', data);
-        this.drawChart("");
-    }
+    
     drawChart(data) {
-        let categories = ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017'];
-        let series = [{
-            name: 'New lines',
-            data: [120, 140, 108, 200, 184, 152, 80]
-        }, {
-            name: 'Modified lines',
-            data: [180, 210, 162, 300, 276, 228, 120]
-        }];
-        this.options = {
+        let categories = [];
+        let series = [];
+        this.options = this.bindChartOption(categories, series);
+    }
+    bindChartOption(categories, series) {
+        return {
             credits: {
                 enabled: false
             },
@@ -77,6 +70,31 @@ export class StackedChartCommitSize implements OnInit {
             series: series
         };
     }
-    constructor() { }
+
+    ngOnInit(): void {
+        this.drawChart("");
+        let categories = [];
+        let series = [];
+        this._transferData.lineChangeOfCommitDataSubject.subscribe(res => {
+            this.options = this.bindChartOption(res.dates, res.datas)
+        });
+    }
+
+    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
+        let defaultFilter = {};
+        defaultFilter['startDate'] = '';
+        defaultFilter['endDate'] = '';
+        defaultFilter['reposModel'] = '';
+        defaultFilter['branchesModel'] = '';
+        defaultFilter['usersModel'] ='';
+        this._dataService.getLineChangeOfCommits(JSON.stringify(defaultFilter)).subscribe(res => {
+            this._transferData.updateLineChangeOfCommitData(res);
+        },
+            error => alert("error"),
+            () => {
+                console.log("Finish");
+            }
+        );
+    }
     options: Object;
 }
