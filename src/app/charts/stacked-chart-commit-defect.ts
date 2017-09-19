@@ -3,7 +3,7 @@ import { TranserData } from '../services/transerData.service';
 import { DataService } from '../services/dataServices';
 
 @Component({
-    selector: 'stacked-chart-commit-size',
+    selector: 'stacked-chart-commit-defect',
     template: `
     <div class="chart-container">
     <img *ngIf="isLoading" class="loading" src="../assets/images/loading.gif"/>
@@ -11,8 +11,8 @@ import { DataService } from '../services/dataServices';
        </div>
    `
 })
-export class StackedChartCommitSize implements OnInit {
-    private isLoading = true;
+export class StackedChartCommitDefect implements OnInit {
+    private isLoading=true;
     drawChart(data) {
         let categories = [];
         let series = [];
@@ -28,7 +28,7 @@ export class StackedChartCommitSize implements OnInit {
                 type: 'column'
             },
             title: {
-                text: 'Timelines VS commit size'
+                text: 'Commits VS Time Line (Jira Defect)'
             },
             xAxis: {
                 categories: categories
@@ -78,24 +78,24 @@ export class StackedChartCommitSize implements OnInit {
         this.drawChart("");
         let categories = [];
         let series = [];
-        this._transferData.loadingGraph3DataSubject.subscribe(res => { this.isLoading = true });
-        this._transferData.lineChangeOfCommitDataSubject.subscribe(res => {
+        this._transferData.loadingGraph6DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.jiraDefectOfCommitDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res.dates, res.datas);
             this.isLoading=false;
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService: DataService) {
+    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
         // let defaultFilter = {};
         // defaultFilter['startDate'] = '';
         // defaultFilter['endDate'] = '';
         // defaultFilter['reposModel'] = '';
         // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] = '';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph3').subscribe(res => {
-        //     this._transferData.updateLineChangeOfCommitData(res[2]);
+        // defaultFilter['usersModel'] ='';
+        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph6').subscribe(res => {
+        //     this._transferData.updateJiraDefectOfCommitData(res[5]);
         // },
-        //     error => alert("error: Can't get chart data for graph 3"),
+        //     error => alert("error: Can't get chart data for graph 6"),
         //     () => {
         //         console.log("Finish");
         //     }

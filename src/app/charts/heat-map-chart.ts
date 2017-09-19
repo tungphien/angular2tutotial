@@ -1,21 +1,46 @@
 import { Component, OnInit } from '@angular/core';
+import { TranserData } from '../services/transerData.service';
+import { DataService } from '../services/dataServices';
 
 @Component({
     selector: 'heat-map-chart',
     template: `
+    <div class="chart-container">
+    <img *ngIf="isLoading" class="loading" src="../assets/images/loading.gif"/>
        <chart [options]="options"></chart>
+       </div>
    `
 })
-export class HeatMapChart implements OnInit{
-    ngOnInit(): void {
-        this.drawChart("");
-    }
-    // recievedData(data) {
-    //     console.log('HeatMapChart', data);
-       
-    // }
+export class HeatMapChart implements OnInit {
+    private isLoading = true;
     drawChart(data) {
-        this.options = {
+        this.options = this.bindChartOption("");
+    }
+    bindChartOption(res) {
+        let xCategories = [];
+        let yCategories = [];
+        let data = [];
+        if (res != null && res != "") {
+            xCategories = res['dates']
+            yCategories = res['files']
+            let rawDatas = res['datas']
+            for (var x = 0; x < xCategories.length; x++) {
+                var xE = xCategories[x];
+                for (var y = 0; y < yCategories.length; y++) {
+                    var yE = yCategories[y];
+                    data.push([x, y, 0])
+                    rawDatas.forEach(item => {
+                        if (item['date'] == xE && item['file'] == yE) {
+                            data.splice(-1,1);
+                            data.push([x, y, item['changes']])
+                        }
+                    });
+
+                }
+            }
+        }
+
+        return {
             credits: {
                 enabled: false
             },
@@ -32,11 +57,11 @@ export class HeatMapChart implements OnInit{
             },
 
             xAxis: {
-                categories: ['9/1/2017', '9/2/2017', '9/3/2017', '9/4/2017', '9/5/2017', '9/6/2017', '9/7/2017']
+                categories: xCategories
             },
 
             yAxis: {
-                categories: ['File 1', 'File 2', 'File 3', 'File 4', 'File 5'],
+                categories: yCategories,
                 title: null
             },
 
@@ -65,7 +90,7 @@ export class HeatMapChart implements OnInit{
             series: [{
                 name: 'The files going through most churn',
                 borderWidth: 1,
-                data: [[0, 0, 10], [0, 1, 19], [0, 2, 8], [0, 3, 24], [0, 4, 67], [1, 0, 92], [1, 1, 58], [1, 2, 78], [1, 3, 117], [1, 4, 48], [2, 0, 35], [2, 1, 15], [2, 2, 123], [2, 3, 64], [2, 4, 52], [3, 0, 72], [3, 1, 132], [3, 2, 114], [3, 3, 19], [3, 4, 16], [4, 0, 38], [4, 1, 5], [4, 2, 8], [4, 3, 117], [4, 4, 115], [5, 0, 88], [5, 1, 32], [5, 2, 12], [5, 3, 6], [5, 4, 120], [6, 0, 13], [6, 1, 44], [6, 2, 88], [6, 3, 98], [6, 4, 96], [7, 0, 31], [7, 1, 1], [7, 2, 82], [7, 3, 32], [7, 4, 30], [8, 0, 85], [8, 1, 97], [8, 2, 123], [8, 3, 64], [8, 4, 84], [9, 0, 47], [9, 1, 114], [9, 2, 31], [9, 3, 48], [9, 4, 91]],
+                data: data,
                 dataLabels: {
                     enabled: true,
                     color: '#000000'
@@ -73,6 +98,31 @@ export class HeatMapChart implements OnInit{
             }]
         };
     }
-    constructor() { }
+    ngOnInit(): void {
+        this.drawChart("");
+        let categories = [];
+        let series = [];
+        this._transferData.loadingGraph5DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.heatmapOfCommitDataSubject.subscribe(res => {
+            this.options = this.bindChartOption(res);
+            this.isLoading = false;
+        });
+    }
+    constructor(private _transferData: TranserData, private _dataService: DataService) {
+        // let defaultFilter = {};
+        // defaultFilter['startDate'] = '';
+        // defaultFilter['endDate'] = '';
+        // defaultFilter['reposModel'] = '';
+        // defaultFilter['branchesModel'] = '';
+        // defaultFilter['usersModel'] = '';
+        // this._dataService.getChartData(JSON.stringify(defaultFilter), 'graph5').subscribe(res => {
+        //     this._transferData.updateHeatMapOfCommitData(res[4]);
+        // },
+        //     error => alert("error: Can't get chart data for graph 5"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
+    }
     options: Object;
 }

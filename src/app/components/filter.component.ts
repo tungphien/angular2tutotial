@@ -30,63 +30,92 @@ export class Filter implements OnInit {
         filterModel['branchesModel'] = this.branchesModel;
         filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
-        this._dataService.getFilesChangeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
-            this._transferData.updateChartFileChangeCommitData(res);
+        this._transferData.updateLoadingGraph1(true);
+        this._transferData.updateLoadingGraph2(true);
+        this._transferData.updateLoadingGraph3(true);
+        this._transferData.updateLoadingGraph4(true);
+        this._transferData.updateLoadingGraph5(true);
+        this._transferData.updateLoadingGraph6(true);
+        this._dataService.getChartData(JSON.stringify(filterModel),'graph1').subscribe(res => {
+            this._transferData.updateChartFileChangeCommitData(res[0]);
+            this._transferData.updateChartJiraStatusCommitData(res[1]);
+            this._transferData.updateLineChangeOfCommitData(res[2]);
+            this._transferData.updateJiraTypeOfCommitData(res[3]);
+            this._transferData.updateHeatMapOfCommitData(res[4]);
+            this._transferData.updateJiraDefectOfCommitData(res[5]);
         },
-            error => alert("error"),
+            error => alert("error: Can't get chart data for graph"),
             () => {
                 console.log("Finish");
             }
         );
 
-        this._dataService.getJiraStatusOfCommits(JSON.stringify(filterModel)).subscribe(res => {
-            this._transferData.updateChartJiraStatusCommitData(res);
-        },
-            error => alert("error"),
-            () => {
-                console.log("Finish");
-            }
-        );
+        // this._transferData.updateLoadingGraph2(true);
+        // this._dataService.getChartData(JSON.stringify(filterModel),'graph2').subscribe(res => {
+        //     this._transferData.updateChartJiraStatusCommitData(res);
+        // },
+        //     error => alert("error: Can't get chart data for graph 2"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
 
-        this._dataService.getLineChangeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
-            this._transferData.updateLineChangeOfCommitData(res);
-        },
-            error => alert("error"),
-            () => {
-                console.log("Finish");
-            }
-        );
+        // this._transferData.updateLoadingGraph3(true);
+        // this._dataService.getChartData(JSON.stringify(filterModel),'graph3').subscribe(res => {
+        //     this._transferData.updateLineChangeOfCommitData(res);
+        // },
+        //     error => alert("error: Can't get chart data for graph 3"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
 
-        this._dataService.getJiraTypeOfCommits(JSON.stringify(filterModel)).subscribe(res => {
-            this._transferData.updateJiraTypeOfCommitData(res);
-        },
-            error => alert("error"),
-            () => {
-                console.log("Finish");
-            }
-        );
+        // this._transferData.updateLoadingGraph4(true);
+        // this._dataService.getChartData(JSON.stringify(filterModel),'graph4').subscribe(res => {
+        //     this._transferData.updateJiraTypeOfCommitData(res);
+        // },
+        //     error => alert("error: Can't get chart data for graph 4"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
+
+        // this._transferData.updateLoadingGraph5(true);
+        // this._dataService.getChartData(JSON.stringify(filterModel),'graph5').subscribe(res => {
+        //     this._transferData.updateHeatMapOfCommitData(res);
+        // },
+        //     error => alert("error: Can't get chart data for graph 5"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
+
+        // this._transferData.updateLoadingGraph6(true);
+        // this._dataService.getChartData(JSON.stringify(filterModel),'graph6').subscribe(res => {
+        //     this._transferData.updateJiraDefectOfCommitData(res);
+        // },
+        //     error => alert("error: Can't get chart data for graph 6"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
     }
 
     ngOnInit() {
         this.repos = [
-            { id: 'http://gerrit-server:8080/Nutanix.git', name: 'Nutanix gerrit local' },
-            { id: 2, name: 'Resporitory 2' },
-            { id: 3, name: 'Resporitory 3' },
-            { id: 4, name: 'Resporitory 4' },
+            { id: 'http://gerrit-server:8080/Nutanix.git', name: 'Gerrit Local' },
+            { id: 'http://52.53.239.241:8080/Nutanix', name: 'Gerrit Server' }           
         ];
         this.branches = [
-            { id: 'master', name: 'Nutanix gerrit local: master' },
-            { id: 2, name: 'Resporitory 1: Branches 1' },
-            { id: 3, name: 'Resporitory 2: master' },
-            { id: 4, name: 'Resporitory 2: Branches 1' },
-            { id: 5, name: 'Resporitory 2: Branches 2' },
+            { id: 'http://gerrit-server:8080/Nutanix.git@master', name: 'Gerrit Local: master' },
+            { id: 'http://52.53.239.241:8080/Nutanix@master', name: 'Gerrit Server: master' }           
         ];
         this.users = [
-            { id: 1, name: 'Nutanix gerrit local: User 1' },
-            { id: 2, name: 'Resporitory 1: User 2' },
-            { id: 3, name: 'Resporitory 2: User 1' },
-            { id: 4, name: 'Resporitory 2: User 2' },
-            { id: 5, name: 'Resporitory 2: User 3' },
+            { id: 'http://gerrit-server:8080/Nutanix.git@1', name: 'Gerrit Local: User 1' },
+            { id: 'http://gerrit-server:8080/Nutanix.git@2', name: 'Gerrit Local: User 2' },
+            { id: 'http://52.53.239.241:8080/Nutanix@1', name: 'Gerrit Server: User 1' },
+            { id: 'http://52.53.239.241:8080/Nutanix@2', name: 'Gerrit Server: User 2' },
+            { id: 'http://52.53.239.241:8080/Nutanix@3', name: 'Gerrit Server: User 3' },
         ];
     }
     onChange() {

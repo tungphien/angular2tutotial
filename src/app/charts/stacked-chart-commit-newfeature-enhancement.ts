@@ -5,11 +5,14 @@ import { DataService } from '../services/dataServices';
 @Component({
     selector: 'stacked-chart-commit-new-enhancement',
     template: `
+    <div class="chart-container">
+    <img *ngIf="isLoading" class="loading" src="../assets/images/loading.gif"/>
        <chart [options]="options"></chart>
+       </div>
    `
 })
 export class StackedChartCommitNewEnhancement implements OnInit {
-    
+    private isLoading=true;
     drawChart(data) {
         let categories = [];
         let series = [];
@@ -75,26 +78,28 @@ export class StackedChartCommitNewEnhancement implements OnInit {
         this.drawChart("");
         let categories = [];
         let series = [];
+        this._transferData.loadingGraph4DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.jiraTypeOfCommitDataSubject.subscribe(res => {
-            this.options = this.bindChartOption(res.dates, res.datas)
+            this.options = this.bindChartOption(res.dates, res.datas);
+            this.isLoading=false;
         });
     }
 
     constructor(private _transferData: TranserData, private _dataService:DataService ) { 
-        let defaultFilter = {};
-        defaultFilter['startDate'] = '';
-        defaultFilter['endDate'] = '';
-        defaultFilter['reposModel'] = '';
-        defaultFilter['branchesModel'] = '';
-        defaultFilter['usersModel'] ='';
-        this._dataService.getJiraTypeOfCommits(JSON.stringify(defaultFilter)).subscribe(res => {
-            this._transferData.updateJiraTypeOfCommitData(res);
-        },
-            error => alert("error: getJiraTypeOfCommits"),
-            () => {
-                console.log("Finish");
-            }
-        );
+        // let defaultFilter = {};
+        // defaultFilter['startDate'] = '';
+        // defaultFilter['endDate'] = '';
+        // defaultFilter['reposModel'] = '';
+        // defaultFilter['branchesModel'] = '';
+        // defaultFilter['usersModel'] ='';
+        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph4').subscribe(res => {
+        //     this._transferData.updateJiraTypeOfCommitData(res[3]);
+        // },
+        //     error => alert("error: Can't get chart data for graph 4"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
     }
     options: Object;
 }

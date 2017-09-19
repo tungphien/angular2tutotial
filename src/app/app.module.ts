@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ChartModule } from 'angular2-highcharts';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
-import { AlertModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { StackedChartCommit } from './charts/stacked-chart-commit';
@@ -16,6 +15,7 @@ import { HeatMapChart } from './charts/heat-map-chart';
 import { Filter } from './components/filter.component';
 import { DataService } from './services/dataServices';
 import { TranserData } from './services/transerData.service';
+import { StackedChartCommitDefect } from './charts/stacked-chart-commit-defect';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -32,17 +32,17 @@ export function highchartsFactory() {
     StackedChartCommitSize,
     StackedChartCommitNewEnhancement,
     HeatMapChart,
+    StackedChartCommitDefect,
     Filter
   ],
   imports: [
-    MultiselectDropdownModule,
-    AlertModule.forRoot(),
+    MultiselectDropdownModule,    
     BrowserModule,
     FormsModule,
     HttpModule,
     ChartModule
   ],
-  providers: [{ provide: HighchartsStatic, useFactory: highchartsFactory },DataService, TranserData, StackedChartBug, StackedChartCommit, StackedChartCommitSize, StackedChartCommitNewEnhancement, HeatMapChart],
+  providers: [{ provide: HighchartsStatic, useFactory: highchartsFactory },DataService, TranserData],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
