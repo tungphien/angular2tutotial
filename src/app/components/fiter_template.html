@@ -2,6 +2,22 @@
     <legend>Filter</legend>
     <div class="container">
         <div class="form-group row">
+            <label for="example-text-input" class="col-sm-1 col-form-label">Release Version</label>
+            <div class="col-sm-3 form-group">
+                <select class="form-control" [(ngModel)]="releaseVersionModel" (change)="onChangeReleaseVersion($event.target.value)" >                                           
+                    <option *ngFor="let item of releaseVersions" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+            <label for="example-text-input" class="col-sm-1 col-form-label">Start date</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="date" #startDate (change)="onInputChange(startDate.value, 'startDate')">
+            </div>
+            <label for="example-text-input" class="col-sm-1 col-form-label">End date</label>
+            <div class="col-sm-3">
+                <input class="form-control" type="date" #endDate (change)="onInputChange(endDate.value, 'endDate')">
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="example-text-input" class="col-sm-1 col-form-label">Repositories</label>
             <div class="col-sm-3">
                 <ss-multiselect-dropdown [options]="repos" [(ngModel)]="reposModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
@@ -15,18 +31,7 @@
                 <ss-multiselect-dropdown [options]="users" [(ngModel)]="usersModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
             </div>
         </div>
-        <div class="form-group row">
-            <label for="example-text-input" class="col-sm-1 col-form-label">Start date</label>
-            <div class="col-sm-3">
-                <input class="form-control" type="date" #startDate (change)="onInputChange(startDate.value, 'startDate')">
-            </div>
-            <label for="example-text-input" class="col-sm-1 col-form-label">End date</label>
-            <div class="col-sm-3">
-                <input class="form-control" type="date" #endDate (change)="onInputChange(endDate.value, 'endDate')">
-            </div>
-            <label for="example-text-input" class="col-sm-1 col-form-label"></label>
-            <div class="col-sm-3"></div>
-        </div>
+
         <div class="row text-center">
             <button type="button" class="btn btn-primary" (click)="generateChart()">Generate Chart</button>
         </div>

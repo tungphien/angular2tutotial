@@ -85,21 +85,6 @@ export class StackedChartCommitSize implements OnInit {
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService: DataService) {
-        // let defaultFilter = {};
-        // defaultFilter['startDate'] = '';
-        // defaultFilter['endDate'] = '';
-        // defaultFilter['reposModel'] = '';
-        // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] = '';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph3').subscribe(res => {
-        //     this._transferData.updateLineChangeOfCommitData(res[2]);
-        // },
-        //     error => alert("error: Can't get chart data for graph 3"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-    }
+    constructor(private _transferData: TranserData, private _dataService: DataService) {}
     options: Object;
 }

@@ -14,63 +14,70 @@ import { DataService } from '../services/dataServices';
 })
 export class StackedChartCommit implements OnInit {
     isLoading = true;
-    drawChart(data) {
+    drawChart(data) {        
+        this.options = this.bindChartOption(null);
+    }
+    bindChartOption(res) {
         let categories = [];
         let series = [];
-        this.options = this.bindChartOption(categories, series);
-    }
-    bindChartOption(categories, series) {
+        if(res!=null){            
+            categories=res['dates']
+            if(res['datas']){                
+                Object.keys(res['datas']).forEach(item=>{      
+                     debugger;        
+                     console.log(item);                                              
+                    res['datas'][item].forEach(pro => { 
+                        let serie={};
+                        serie['name'] = pro['name'];                                                
+                        serie['data'] = pro['data'];                        
+                        serie['stack']=item;
+                        series.push(serie);
+                    });    
+                              
+                });
+            }           
+
+        }
+        console.log('series',series);
+        console.log('categories',categories);
         return {
             credits: {
                 enabled: false
-            },
-            colors: ['#ed7d31', '#4472c4'],
+            },           
             chart: {
                 type: 'column'
             },
+        
             title: {
-                text: 'Commits VS Time Line'
+                text: 'Commit vs TimeLine'
             },
+        
             xAxis: {
                 categories: categories
             },
+        
             yAxis: {
+                allowDecimals: false,
                 min: 0,
                 title: {
-                    text: ''
-                },
-                stackLabels: {
-                    enabled: true,
-                    style: {
-                        fontWeight: 'bold',
-                        color: 'gray'
-                    }
+                    text: 'Number of fruits'
                 }
             },
-            legend: {
-                align: 'right',
-                x: -30,
-                verticalAlign: 'top',
-                y: 25,
-                floating: true,
-                backgroundColor: 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
+        
             tooltip: {
-                headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +                       
+                        this.series.name + ': ' + this.y + '<br/>' +
+                        'Total: ' + this.point.stackTotal;
+                }
             },
+        
             plotOptions: {
                 column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: true,
-                        color: 'white'
-                    }
+                    stacking: 'normal'
                 }
             },
+        
             series: series
         };
     }
@@ -81,26 +88,11 @@ export class StackedChartCommit implements OnInit {
         let series = [];
         this._transferData.loadingGraph1DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.fileChangeCommitDataSubject.subscribe(res => {
-            this.options = this.bindChartOption(res.dates, res.datas);
+            this.options = this.bindChartOption(res);
             this.isLoading = false;
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService: DataService) {
-        // let defaultFilter = {};
-        // defaultFilter['startDate'] = '';
-        // defaultFilter['endDate'] = '';
-        // defaultFilter['reposModel'] = '';
-        // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] = '';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter), 'graph1').subscribe(res => {
-        //     this._transferData.updateChartFileChangeCommitData(res[0]);
-        // },
-        //     error => alert("error: Can't get chart data for graph 1"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-    }
+    constructor(private _transferData: TranserData, private _dataService: DataService) {}
     options: Object;
 }

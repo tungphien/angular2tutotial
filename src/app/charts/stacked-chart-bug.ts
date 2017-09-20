@@ -11,14 +11,14 @@ import { TranserData } from '../services/transerData.service';
        </div>
    `
 })
-export class StackedChartBug implements OnInit {      
-    private isLoading = true ; 
+export class StackedChartBug implements OnInit {
+    private isLoading = true;
     drawChart(data) {
         let categories = [];
         let series = [];
         this.options = this.bindChartOption(categories, series);
     }
-    bindChartOption(categories, series) {       
+    bindChartOption(categories, series) {
         return {
             credits: {
                 enabled: false
@@ -81,24 +81,9 @@ export class StackedChartBug implements OnInit {
         this._transferData.loadingGraph2DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.jiraStatusDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res.dates, res.datas);
-            this.isLoading=false;
+            this.isLoading = false;
         });
     }
-    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
-        // let defaultFilter = {};
-        // defaultFilter['startDate'] = '';
-        // defaultFilter['endDate'] = '';
-        // defaultFilter['reposModel'] = '';
-        // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] ='';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph2').subscribe(res => {
-        //     this._transferData.updateChartJiraStatusCommitData(res[1]);
-        // },
-        //     error => alert("error: Can't get chart data for graph 2"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-    }
+    constructor(private _transferData: TranserData, private _dataService: DataService) { }
     options: Object;
 }

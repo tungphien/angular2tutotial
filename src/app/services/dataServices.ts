@@ -26,31 +26,8 @@ export class DataService {
   /*
     typeChart: graph1,graph2,graph3,graph4,graph5,graph6    
   */
-  getChartData(filterModel, typeChart) {
-    let url = this.BASE_URL + "/chartsData";
-    // switch (typeChart) {
-    //   case 'graph1':
-    //     url = this.BASE_URL + '/filesChangeOfCommits';
-    //     break;
-    //   case 'graph2':
-    //     url = this.BASE_URL + '/jiraStatusOfCommits';
-    //     break;
-    //   case 'graph3':
-    //     url = this.BASE_URL + '/linesChangeOfCommits';
-    //     break;
-    //   case 'graph4':
-    //     url = this.BASE_URL + '/jiraTypeOfCommits';
-    //     break;
-    //   case 'graph5':
-    //     url = this.BASE_URL + '/heatmapFileChanges';
-    //     break;
-    //   case 'graph6':
-    //     url = this.BASE_URL + '/jiraDefectOfCommits';
-    //     break;
-    //   default:
-    //     url = this.BASE_URL + '/filesChangeOfCommits';
-    //     break;
-    // }    
+  getChartData(filterModel) {
+    let url = this.BASE_URL + "/chartsData";   
     console.log('getChartData',url);    
     let filterData = JSON.parse(filterModel);
     var req = {

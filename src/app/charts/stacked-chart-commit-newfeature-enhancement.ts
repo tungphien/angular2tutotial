@@ -85,21 +85,6 @@ export class StackedChartCommitNewEnhancement implements OnInit {
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
-        // let defaultFilter = {};
-        // defaultFilter['startDate'] = '';
-        // defaultFilter['endDate'] = '';
-        // defaultFilter['reposModel'] = '';
-        // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] ='';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph4').subscribe(res => {
-        //     this._transferData.updateJiraTypeOfCommitData(res[3]);
-        // },
-        //     error => alert("error: Can't get chart data for graph 4"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-    }
+    constructor(private _transferData: TranserData, private _dataService:DataService ) {  }
     options: Object;
 }

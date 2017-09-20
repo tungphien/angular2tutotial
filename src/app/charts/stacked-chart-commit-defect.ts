@@ -85,21 +85,6 @@ export class StackedChartCommitDefect implements OnInit {
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService:DataService ) { 
-        // let defaultFilter = {};
-        // defaultFilter['startDate'] = '';
-        // defaultFilter['endDate'] = '';
-        // defaultFilter['reposModel'] = '';
-        // defaultFilter['branchesModel'] = '';
-        // defaultFilter['usersModel'] ='';
-        // this._dataService.getChartData(JSON.stringify(defaultFilter),'graph6').subscribe(res => {
-        //     this._transferData.updateJiraDefectOfCommitData(res[5]);
-        // },
-        //     error => alert("error: Can't get chart data for graph 6"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-    }
+    constructor(private _transferData: TranserData, private _dataService:DataService ) {  }
     options: Object;
 }
