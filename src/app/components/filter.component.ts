@@ -42,14 +42,14 @@ export class Filter implements OnInit {
         console.log(filterModel);
         this._transferData.updateLoadingGraph1(true);
         this._transferData.updateLoadingGraph2(true);
-        // this._transferData.updateLoadingGraph3(true);
+        this._transferData.updateLoadingGraph3(true);
         // this._transferData.updateLoadingGraph4(true);
         // this._transferData.updateLoadingGraph5(true);
         // this._transferData.updateLoadingGraph6(true);
         this._dataService.getChartData(JSON.stringify(filterModel)).subscribe(res => {
             this._transferData.updateChartFileChangeCommitData(res[0]);
             this._transferData.updateChartJiraStatusCommitData(res[1]);
-            // this._transferData.updateLineChangeOfCommitData(res[2]);
+            this._transferData.updateLineChangeOfCommitData(res[2]);
             // this._transferData.updateJiraTypeOfCommitData(res[3]);
             // this._transferData.updateHeatMapOfCommitData(res[4]);
             // this._transferData.updateJiraDefectOfCommitData(res[5]);
