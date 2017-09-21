@@ -23,22 +23,15 @@ export class DataService {
   /**/
   constructor(private http: Http) { }
 
-  /*
-    typeChart: graph1,graph2,graph3,graph4,graph5,graph6    
-  */
   getChartData(filterModel) {
     let url = this.BASE_URL + "/chartsData";   
     console.log('getChartData',url);    
     let filterData = JSON.parse(filterModel);
-    var req = {
-      // url: this.GERRIT_SERVER,
-      // username: this.GERRIT_USER,
-      // password: this.GERRIT_PASS,
-      url: this.GERRIT_SERVER_LOCAL,
-      username: this.GERRIT_USER_LOCAL,
-      password: this.GERRIT_PASS_LOCAL,
-      branch: filterData['branchesModel'],
-      user: filterData['usersModel'],
+    var req = {     
+      releaseVersion:filterData['releaseVersionModel'],
+      repositories: JSON.stringify(filterData['reposModel']),    
+      branches: JSON.stringify(filterData['branchesModel']),
+      users: JSON.stringify(filterData['usersModel']),
       startdate: filterData['startDate'],
       enddate: filterData['endDate']
     }

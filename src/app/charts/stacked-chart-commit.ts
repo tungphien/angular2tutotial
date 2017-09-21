@@ -14,78 +14,71 @@ import { DataService } from '../services/dataServices';
 })
 export class StackedChartCommit implements OnInit {
     isLoading = true;
-    drawChart(data) {        
-        this.options = this.bindChartOption(null);
-    }
     bindChartOption(res) {
         let categories = [];
         let series = [];
-        if(res!=null){            
-            categories=res['dates']
-            if(res['datas']){                
-                Object.keys(res['datas']).forEach(item=>{      
-                     debugger;        
-                     console.log(item);                                              
-                    res['datas'][item].forEach(pro => { 
-                        let serie={};
-                        serie['name'] = pro['name'];                                                
-                        serie['data'] = pro['data'];                        
-                        serie['stack']=item;
+        if (res != null) {
+            categories = res['dates']
+            if (res['datas']) {
+                Object.keys(res['datas']).forEach(item => {
+
+                    res['datas'][item].forEach(pro => {
+                        let serie = {};
+                        serie['name'] = pro['name'];
+                        serie['data'] = pro['data'];
+                        serie['stack'] = item;
                         series.push(serie);
-                    });    
-                              
+                    });
+
                 });
-            }           
+            }
 
         }
-        console.log('series',series);
-        console.log('categories',categories);
         return {
             credits: {
                 enabled: false
-            },           
+            },
             chart: {
                 type: 'column'
             },
-        
+
             title: {
                 text: 'Commit vs TimeLine'
             },
-        
+
             xAxis: {
                 categories: categories
             },
-        
+
             yAxis: {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Number of fruits'
+                    text: 'Number of commit'
                 }
             },
-        
+
             tooltip: {
                 formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' +                       
+                    return '<b>' + this.x + '</b><br/>' +
+                        'Project: ' + this.series.userOptions.stack + '<br/>' +
                         this.series.name + ': ' + this.y + '<br/>' +
                         'Total: ' + this.point.stackTotal;
                 }
             },
-        
+
             plotOptions: {
                 column: {
                     stacking: 'normal'
                 }
             },
-        
+
             series: series
         };
     }
 
     ngOnInit(): void {
-        this.drawChart("");
-        let categories = [];
-        let series = [];
+        this.options = this.bindChartOption(null);
         this._transferData.loadingGraph1DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.fileChangeCommitDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res);
@@ -93,6 +86,6 @@ export class StackedChartCommit implements OnInit {
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService: DataService) {}
+    constructor(private _transferData: TranserData, private _dataService: DataService) { }
     options: Object;
 }

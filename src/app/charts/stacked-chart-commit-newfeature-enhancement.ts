@@ -12,79 +12,79 @@ import { DataService } from '../services/dataServices';
    `
 })
 export class StackedChartCommitNewEnhancement implements OnInit {
-    private isLoading=true;
-    drawChart(data) {
+    private isLoading = true;
+    bindChartOption(res) {
         let categories = [];
         let series = [];
-        this.options = this.bindChartOption(categories, series);
-    }
-    bindChartOption(categories, series) {
+        if (res != null) {
+            categories = res['dates']
+            if (res['datas']) {
+                Object.keys(res['datas']).forEach(item => {
+
+                    res['datas'][item].forEach(pro => {
+                        let serie = {};
+                        serie['name'] = pro['name'];
+                        serie['data'] = pro['data'];
+                        serie['stack'] = item;
+                        series.push(serie);
+                    });
+
+                });
+            }
+
+        }
         return {
             credits: {
                 enabled: false
             },
-            colors: ['#ed7d31', '#4472c4'],
             chart: {
                 type: 'column'
             },
+
             title: {
-                text: 'Commits VS Time Line (New feature vs Enhancement)'
+                text: 'Commit vs TimeLine (New Feature and Enhancement)'
             },
+
             xAxis: {
                 categories: categories
             },
+
             yAxis: {
+                allowDecimals: false,
                 min: 0,
                 title: {
-                    text: ''
-                },
-                stackLabels: {
-                    enabled: true,
-                    style: {
-                        fontWeight: 'bold',
-                        color: 'gray'
-                    }
+                    text: 'Number of commit'
                 }
             },
-            legend: {
-                align: 'right',
-                x: -30,
-                verticalAlign: 'top',
-                y: 25,
-                floating: true,
-                backgroundColor: 'white',
-                borderColor: '#CCC',
-                borderWidth: 1,
-                shadow: false
-            },
+
             tooltip: {
-                headerFormat: '<b>{point.x}</b><br/>',
-                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' +
+                        'Project: ' + this.series.userOptions.stack + '<br/>' +
+                        this.series.name + ': ' + this.y + '<br/>' +
+                        'Total: ' + this.point.stackTotal;
+                }
             },
+
             plotOptions: {
                 column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: true,
-                        color: 'white'
-                    }
+                    stacking: 'normal'
                 }
             },
+
             series: series
         };
     }
 
     ngOnInit(): void {
-        this.drawChart("");
-        let categories = [];
-        let series = [];
+        this.options = this.bindChartOption(null);
         this._transferData.loadingGraph4DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.jiraTypeOfCommitDataSubject.subscribe(res => {
-            this.options = this.bindChartOption(res.dates, res.datas);
-            this.isLoading=false;
+            this.options = this.bindChartOption(res);
+            this.isLoading = false;
         });
     }
 
-    constructor(private _transferData: TranserData, private _dataService:DataService ) {  }
+    constructor(private _transferData: TranserData, private _dataService: DataService) { }
     options: Object;
 }

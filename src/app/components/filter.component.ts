@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
+import {SelectModule} from 'angular2-select';
 import { TranserData } from '../services/transerData.service';
 import { DataService } from '../services/dataServices';
 
@@ -11,7 +12,7 @@ export class Filter implements OnInit {
     static get parameters() {
         return [[TranserData], [DataService]];
     }
-    releaseVersionModel: string=null;
+    releaseVersionModel: string='1.0';
     releaseVersions:any;
     reposModel: string[];
     repos: IMultiSelectOption[];
@@ -24,10 +25,11 @@ export class Filter implements OnInit {
     onInputChange(value: string, key: string) {
         this[key] = value;       
     }
-    onChangeReleaseVersion(value)
+    onChangeReleaseVersion(item)
     {
         console.log('onChangeReleaseVersion', this.releaseVersionModel);
-        
+        console.log('@@@', item.value);
+        this.releaseVersionModel=item.value;
     }
     generateChart() {
         let filterModel = {};
@@ -39,14 +41,14 @@ export class Filter implements OnInit {
         filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
         this._transferData.updateLoadingGraph1(true);
-        // this._transferData.updateLoadingGraph2(true);
+        this._transferData.updateLoadingGraph2(true);
         // this._transferData.updateLoadingGraph3(true);
         // this._transferData.updateLoadingGraph4(true);
         // this._transferData.updateLoadingGraph5(true);
         // this._transferData.updateLoadingGraph6(true);
         this._dataService.getChartData(JSON.stringify(filterModel)).subscribe(res => {
             this._transferData.updateChartFileChangeCommitData(res[0]);
-            // this._transferData.updateChartJiraStatusCommitData(res[1]);
+            this._transferData.updateChartJiraStatusCommitData(res[1]);
             // this._transferData.updateLineChangeOfCommitData(res[2]);
             // this._transferData.updateJiraTypeOfCommitData(res[3]);
             // this._transferData.updateHeatMapOfCommitData(res[4]);
@@ -60,8 +62,8 @@ export class Filter implements OnInit {
        
     }
 
-    ngOnInit() {
-        this.releaseVersions = [{ name: "Release 1.0", id: "1.0" }, { name: "Release 1.1", id: "1.1" }, { name: "Release 1.2", id: "1.2" }];
+    ngOnInit() {        
+        this.releaseVersions = [{ label: "Release 1.0", value: "1.0" }, { label: "Release 1.1", value: "1.1" }, { label: "Release 1.2", value: "1.2" }];
         this.repos = [
             { id: 'http://gerrit-server:8080/Nutanix.git#john#johnldap', name: 'Gerrit Local' },
             { id: 'http://52.53.239.241:8080/Nutanix#test1#test1', name: 'Gerrit Server' }           
