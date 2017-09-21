@@ -53,7 +53,7 @@ export class StackedChartBug implements OnInit {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Number of commit'
+                    text: 'Number of bugs'
                 }
             },
 
