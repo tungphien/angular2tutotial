@@ -1,0 +1,6 @@
+{
+    "repos" : [
+        { "id": "http://gerrit-server:8080/Nutanix.git#john#johnldap", "name": "Gerrit Local" },
+        { "id": "http://52.53.239.241:8080/Nutanix#test1#test1", "name": "Gerrit Server" }           
+    ]
+}

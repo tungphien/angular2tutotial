@@ -22,9 +22,9 @@ export class AppComponent {
       this._transferData.updateChartFileChangeCommitData(res[0]);
       this._transferData.updateChartJiraStatusCommitData(res[1]);
       this._transferData.updateLineChangeOfCommitData(res[2]);
-      // this._transferData.updateJiraTypeOfCommitData(res[3]);
+      this._transferData.updateJiraTypeOfCommitData(res[3]);
       // this._transferData.updateHeatMapOfCommitData(res[4]);
-      // this._transferData.updateJiraDefectOfCommitData(res[5]);
+      this._transferData.updateJiraDefectOfCommitData(res[5]);
     },
       error => {
         alert("error: Can't get chart data for graph");

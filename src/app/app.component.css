@@ -26,3 +26,15 @@ hr{
 input, select, button{
     border-radius: 0px!important;
 }
+ss-multiselect-dropdown .dropdown-inline{
+    display: block!important;
+}
+ss-multiselect-dropdown .dropdown-inline .btn{
+    text-align: left!important;
+}
+ss-multiselect-dropdown .dropdown-toggle  .caret
+{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}

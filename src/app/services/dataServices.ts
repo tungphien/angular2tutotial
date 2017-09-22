@@ -39,4 +39,13 @@ export class DataService {
     return this.http.post(url, req)
       .map(res => res.json());
   }
+
+  getBranchesByRepo(repoData) {
+    let url = this.BASE_URL + "/branchesByRepos";    
+    var req = {     
+      repositories: repoData  
+    }
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
 }
