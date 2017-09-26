@@ -17,6 +17,7 @@ export class HeatMapChart implements OnInit {
         this.options = this.bindChartOption("");
     }
     bindChartOption(res) {
+        debugger;
         let xCategories = [];
         let yCategories = [];
         let data = [];
@@ -24,20 +25,21 @@ export class HeatMapChart implements OnInit {
             xCategories = res['dates']
             yCategories = res['files']
             let rawDatas = res['datas']
-            for (var x = 0; x < xCategories.length; x++) {
-                var xE = xCategories[x];
-                for (var y = 0; y < yCategories.length; y++) {
-                    var yE = yCategories[y];
-                    data.push([x, y, 0])
-                    rawDatas.forEach(item => {
-                        if (item['date'] == xE && item['file'] == yE) {
-                            data.splice(-1,1);
-                            data.push([x, y, item['changes']])
-                        }
-                    });
+            if (xCategories != null && yCategories != null)
+                for (var x = 0; x < xCategories.length; x++) {
+                    var xE = xCategories[x];
+                    for (var y = 0; y < yCategories.length; y++) {
+                        var yE = yCategories[y];
+                        data.push([x, y, 0])
+                        rawDatas.forEach(item => {
+                            if (item['date'] == xE && item['file'] == yE) {
+                                data.splice(-1, 1);
+                                data.push([x, y, item['changes']])
+                            }
+                        });
 
+                    }
                 }
-            }
         }
 
         return {
@@ -87,15 +89,25 @@ export class HeatMapChart implements OnInit {
                 }
             },
 
-            series: [{
-                name: 'The files going through most churn',
-                borderWidth: 1,
-                data: data,
-                dataLabels: {
-                    enabled: true,
-                    color: '#000000'
-                }
-            }]
+            series: [
+                {
+                    name: 'The files going through most churn',
+                    borderWidth: 1,
+                    data: data,
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000'
+                    },
+                    events: {
+                        click: function (e) {                           
+                            let filterModel = {
+                                "key": e.point.series.yAxis.categories[e.point.y],
+                                "date": e.point.series.xAxis.categories[e.point.x]
+                            }
+                            console.log("Clicked:", filterModel);
+                        }
+                    }
+                }]
         };
     }
     ngOnInit(): void {
@@ -108,6 +120,6 @@ export class HeatMapChart implements OnInit {
             this.isLoading = false;
         });
     }
-    constructor(private _transferData: TranserData, private _dataService: DataService) {}
+    constructor(private _transferData: TranserData, private _dataService: DataService) { }
     options: Object;
 }
