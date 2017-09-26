@@ -43,7 +43,7 @@ export class StackedChartCommit implements OnInit {
             },
 
             title: {
-                text: 'Commit vs TimeLine'
+                text: 'Number of Commit vs TimeLine'
             },
 
             xAxis: {

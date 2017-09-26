@@ -42,7 +42,7 @@ export class StackedChartCommitDefect implements OnInit {
             },
 
             title: {
-                text: 'Commit vs TimeLine (Jira Defect)'
+                text: 'Defect Commit vs TimeLine'
             },
 
             xAxis: {

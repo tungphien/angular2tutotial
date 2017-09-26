@@ -42,7 +42,7 @@ export class StackedChartBug implements OnInit {
             },
 
             title: {
-                text: 'Bugs vs TimeLine'
+                text: 'Bug Status vs TimeLine'
             },
 
             xAxis: {

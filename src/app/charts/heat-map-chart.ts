@@ -55,7 +55,7 @@ export class HeatMapChart implements OnInit {
 
 
             title: {
-                text: 'The files going through most churn'
+                text: 'Statistic of Changes vs TimeLine'
             },
 
             xAxis: {
@@ -91,7 +91,7 @@ export class HeatMapChart implements OnInit {
 
             series: [
                 {
-                    name: 'The files going through most churn',
+                    name: 'Statistic of Changes vs TimeLine',
                     borderWidth: 1,
                     data: data,
                     dataLabels: {

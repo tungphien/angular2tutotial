@@ -42,7 +42,7 @@ export class StackedChartCommitNewEnhancement implements OnInit {
             },
 
             title: {
-                text: 'Commit vs TimeLine (New Feature and Enhancement)'
+                text: 'New Feature and Enhancement Commit vs TimeLine'
             },
 
             xAxis: {
