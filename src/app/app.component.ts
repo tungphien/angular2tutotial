@@ -14,8 +14,8 @@ export class AppComponent {
     let defaultFilter = {};
     defaultFilter['startDate'] = '';
     defaultFilter['endDate'] = '';
-    defaultFilter['reposModel'] = ['http://gerrit-server:8080/Nutanix.git#john#johnldap'];
-    defaultFilter['branchesModel'] = ['http://gerrit-server:8080/Nutanix.git#master'];
+    defaultFilter['reposModel'] = '';
+    defaultFilter['branchesModel'] = '';
     defaultFilter['usersModel'] = '';
     defaultFilter['releaseVersionModel'] = '1.0';
     this._dataService.getChartData(JSON.stringify(defaultFilter)).subscribe(res => {

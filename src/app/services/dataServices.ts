@@ -14,7 +14,7 @@ export class DataService {
   private GERRIT_SERVER_LOCAL = 'http://gerrit-server:8080/Nutanix.git'; // URL gerrit server
   private GERRIT_USER_LOCAL = 'john';
   private GERRIT_PASS_LOCAL = 'johnldap';
-  
+
 
   /*this line is necessary to make the constructor work*/
   static get parameters() {
@@ -24,12 +24,12 @@ export class DataService {
   constructor(private http: Http) { }
 
   getChartData(filterModel) {
-    let url = this.BASE_URL + "/chartsData";   
-    console.log('getChartData',url);    
+    let url = this.BASE_URL + "/chartsData";
+    console.log('getChartData', url);
     let filterData = JSON.parse(filterModel);
-    var req = {     
-      releaseVersion:filterData['releaseVersionModel'],
-      repositories: JSON.stringify(filterData['reposModel']),    
+    let req = {
+      releaseVersion: filterData['releaseVersionModel'],
+      repositories: JSON.stringify(filterData['reposModel']),
       branches: JSON.stringify(filterData['branchesModel']),
       users: JSON.stringify(filterData['usersModel']),
       startdate: filterData['startDate'],
@@ -39,11 +39,24 @@ export class DataService {
     return this.http.post(url, req)
       .map(res => res.json());
   }
-
+  getAllRepositoties() {
+    let url = this.BASE_URL + "/getRepositories";
+    let req = {}
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
   getBranchesByRepo(repoData) {
-    let url = this.BASE_URL + "/branchesByRepos";    
-    var req = {     
-      repositories: repoData  
+    let url = this.BASE_URL + "/branchesByRepos";
+    let req = {
+      repositories: repoData
+    }
+    return this.http.post(url, req)
+      .map(res => res.json());
+  }
+  getUsesByRepo(repoData) {
+    let url = this.BASE_URL + "/usersByRepos";
+    let req = {
+      repositories: repoData
     }
     return this.http.post(url, req)
       .map(res => res.json());

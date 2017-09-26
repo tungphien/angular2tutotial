@@ -31,6 +31,7 @@ ss-multiselect-dropdown .dropdown-inline{
 }
 ss-multiselect-dropdown .dropdown-inline .btn{
     text-align: left!important;
+    min-height: 35px;
 }
 ss-multiselect-dropdown .dropdown-toggle  .caret
 {

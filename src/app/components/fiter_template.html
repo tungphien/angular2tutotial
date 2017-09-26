@@ -18,7 +18,7 @@
         <div class="form-group row">
             <label for="example-text-input" class="col-sm-1 col-form-label">Repositories</label>
             <div class="col-sm-3">
-                <ss-multiselect-dropdown [options]="repos" [(ngModel)]="reposModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onRepoChange($event)"></ss-multiselect-dropdown>
+                <ss-multiselect-dropdown [disabled]="repos==null || (repos!=null && repos.length==0)" [options]="repos" [(ngModel)]="reposModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onRepoChange($event)" ></ss-multiselect-dropdown>
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">Branches</label>
             <div class="col-sm-3">
@@ -26,12 +26,12 @@
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">Users</label>
             <div class="col-sm-3">
-                <ss-multiselect-dropdown [disabled]="!enableDepenRepo" [options]="users" [(ngModel)]="usersModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
-            </div>
+                <ss-multiselect-dropdown [disabled]="users==null || (users!=null && users.length==0)"  [options]="users" [(ngModel)]="usersModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
+            </div>           
         </div>
 
         <div class="row text-center">
-            <button type="button" class="btn btn-primary" (click)="generateChart()">Generate Chart</button>
+            <button [disabled]="releaseVersionModel==null || releaseVersionModel==''" type="button" class="btn btn-primary" (click)="generateChart()">Generate Chart</button>
         </div>
     </div>
 

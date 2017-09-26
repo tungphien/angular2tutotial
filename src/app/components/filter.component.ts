@@ -49,7 +49,7 @@ export class Filter implements OnInit {
             // this._transferData.updateHeatMapOfCommitData(res[4]);
             this._transferData.updateJiraDefectOfCommitData(res[5]);
         },
-            error => alert("error: Can't get chart data for graph"),
+            error => alert("Error: Can't get chart data for graph"),
             () => {
                 console.log("Finish");
             }
@@ -58,29 +58,46 @@ export class Filter implements OnInit {
     }
 
     ngOnInit() {
-        this.repos = config['repos'];
+        this.repos = [];
+        let rps = [];
+        this._dataService.getAllRepositoties().subscribe(res => {
+            res.forEach(r => {
+                rps.push({ "id": r, "name": r })
+            });
+            this.repos = rps;
+        },
+            error => alert("Error: Can't get repositories !"),
+            () => {
+                console.log("Finish");
+            }
+        );
         this.branches = [];
-        this.users = [
-            { id: 'http://gerrit-server:8080/Nutanix.git#user1', name: 'Gerrit Local: User 1' },
-            { id: 'http://gerrit-server:8080/Nutanix.git#user2', name: 'Gerrit Local: User 2' },
-            { id: 'http://52.53.239.241:8080/Nutanix#user1', name: 'Gerrit Server: User 1' },
-            { id: 'http://52.53.239.241:8080/Nutanix#user2', name: 'Gerrit Server: User 2' },
-            { id: 'http://52.53.239.241:8080/Nutanix#user3', name: 'Gerrit Server: User 3' },
-        ];
+        
+         //users       
+         this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
+             this.users = res;            
+         },
+             error => alert("Error: Can't get users data by repositories !"),
+             () => {
+                 console.log("Finish");
+             }
+         );
     }
     onRepoChange() {
         console.log(this.reposModel);
         this.enableDepenRepo = false;
+        //Branches
+        this.branchesModel = [];
         this._dataService.getBranchesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
             this.branches = res;
             if (res.length > 0)
                 this.enableDepenRepo = true;
         },
-            error => alert("error: Can't get chart data for graph"),
+            error => alert("Error: Can't get braches data by repositories !"),
             () => {
                 console.log("Finish");
             }
-        );
+        );       
 
     }
     onChange() {
@@ -93,7 +110,8 @@ export class Filter implements OnInit {
         // checkedStyle: 'fontawesome',
         buttonClasses: 'btn btn-default btn-block',
         dynamicTitleMaxItems: 1,
-        displayAllSelectedText: true
+        displayAllSelectedText: true,
+        autoUnselect: true
     };
 
     // Text configuration
