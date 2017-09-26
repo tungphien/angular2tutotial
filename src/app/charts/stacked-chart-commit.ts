@@ -7,7 +7,7 @@ import { DataService } from '../services/dataServices';
     selector: 'stacked-chart-commit',
     template: `
     <div class="chart-container">
-        <img *ngIf="isLoading" class="loading" src="../assets/images/loading.gif"/>
+        <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
        <chart [options]="options"></chart> 
        </div>
    `

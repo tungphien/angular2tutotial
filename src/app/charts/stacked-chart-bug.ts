@@ -6,7 +6,7 @@ import { TranserData } from '../services/transerData.service';
     selector: 'stacked-chart-bug',
     template: `
         <div class="chart-container">
-            <img *ngIf="isLoading" class="loading" src="../assets/images/loading.gif"/>
+            <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
             <chart id="stacked-chart-bug" [options]="options"></chart>
        </div>
    `
