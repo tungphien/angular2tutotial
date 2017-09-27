@@ -61,4 +61,10 @@ export class DataService {
     return this.http.post(url, req)
       .map(res => res.json());
   }
+
+  getHeatMapByFolderOrRepo(filterModel) {
+    let url = this.BASE_URL + "/getHeatMapByFolderOrRepo";    
+    return this.http.post(url, filterModel)
+      .map(res => res.json());
+  }
 }
