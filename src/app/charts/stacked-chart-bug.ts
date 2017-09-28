@@ -12,7 +12,7 @@ import { TranserData } from '../services/transerData.service';
    `
 })
 export class StackedChartBug implements OnInit {
-    private isLoading = true;
+    private isLoading = false;
     bindChartOption(res) {
         let categories = [];
         let series = [];

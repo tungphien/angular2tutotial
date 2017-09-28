@@ -13,7 +13,7 @@ import { DataService } from '../services/dataServices';
    `
 })
 export class StackedChartCommit implements OnInit {
-    isLoading = true;
+    isLoading = false;
     bindChartOption(res) {
         let categories = [];
         let series = [];

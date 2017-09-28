@@ -67,4 +67,10 @@ export class DataService {
     return this.http.post(url, filterModel)
       .map(res => res.json());
   }
+
+  getListRelease() {
+    let url = this.BASE_URL + "/releases";    
+    return this.http.post(url, {})
+      .map(res => res.json());
+  }
 }

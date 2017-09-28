@@ -7,34 +7,39 @@ import { DataService } from '../services/dataServices';
     template: `
     <div class="chart-container">
         <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
-        <a class="back-btn" (click)="backButtonClick()">Back</a>
+        <a *ngIf="historyResponses.length>1" class="back-btn" (click)="backButtonClick()" title="Back to previous chart">Back</a>
         <chart [options]="options"></chart>
     </div>
    `
 })
 export class HeatMapChart implements OnInit {
-    private isLoading = true;
+    private isLoading = false;
     private repoName = "";
-    private historyFilters = [];
+    private historyResponses = [];   
     backButtonClick() {
-        console.log("History:", this.historyFilters);
+        console.log("History:", this.historyResponses);
+        this.historyResponses.pop();
+        let dataRes = this.historyResponses[this.historyResponses.length - 1];
+        if (typeof dataRes['repoName'] == 'undefined') {
+            this.repoName = "";
+        }
+        this.options = this.bindChartOption(dataRes);
     }
     drawChart(data) {
         this.options = this.bindChartOption("");
     }
     bindChartOption(res) {
-        if (this.repoName != "" && this.repoName != res.repoName) {
-            this.repoName = res.repoName;
-        }
+        this.repoName = res.repoName;
         let $this = this;
         let xCategories = [];
         let yCategories = [];
         let data = [];
         let clickableMap = [];
-        if (res != null && res != "") {
-            xCategories = res['dates']
-            yCategories = res['files']
-            let rawDatas = res['datas']
+        let chartData = res['chartData'];
+        if (chartData != null && chartData != "") {
+            xCategories = chartData['dates']
+            yCategories = chartData['files']
+            let rawDatas = chartData['datas']
             if (xCategories != null && yCategories != null) {
                 for (var x = 0; x < xCategories.length; x++) {
                     var xE = xCategories[x];
@@ -117,7 +122,7 @@ export class HeatMapChart implements OnInit {
                     },
                     events: {
                         click: function (e) {
-                            if ($this.getClickAbleFromChart(e.point.x, e.point.y, e.point.series.userOptions.clickableData)) {
+                            if ($this.getClickAbleFromChart(e.point.x, e.point.y, e.point.series.userOptions.clickableData)) {                               
                                 $this.isLoading = true;
                                 let filterModel = {
                                     "repoName": e.point.series.yAxis.categories[e.point.y],
@@ -129,11 +134,11 @@ export class HeatMapChart implements OnInit {
                                     filterModel["folderName"] = e.point.series.yAxis.categories[e.point.y];
                                 }
                                 console.log("Clicked:", filterModel);
-                                $this.historyFilters.push(filterModel);
                                 $this._dataService.getHeatMapByFolderOrRepo(JSON.stringify(filterModel)).subscribe(res => {
-                                    $this.options = $this.bindChartOption(res.chartData);
-                                    $this.repoName = res.repoName;
+                                    $this.options = $this.bindChartOption(res);
+                                    // $this.repoName = res.repoName;
                                     $this.isLoading = false;
+                                    $this.historyResponses.push(res);
                                 },
                                     error => alert("Error: Can't get data !"),
                                     () => {
@@ -163,8 +168,11 @@ export class HeatMapChart implements OnInit {
         let series = [];
         this._transferData.loadingGraph5DataSubject.subscribe(res => { this.isLoading = true });
         this._transferData.heatmapOfCommitDataSubject.subscribe(res => {
-            this.options = this.bindChartOption(res);
+            let makeUpdata = { 'chartData': res, 'repoName': '' };
+            this.options = this.bindChartOption(makeUpdata);
             this.isLoading = false;
+            this.historyResponses=[];
+            this.historyResponses.push(makeUpdata);
         });
     }
     constructor(private _transferData: TranserData, private _dataService: DataService) { }

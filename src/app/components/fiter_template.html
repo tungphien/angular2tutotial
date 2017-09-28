@@ -4,15 +4,19 @@
         <div class="form-group row">
             <label for="example-text-input" class="col-sm-1 col-form-label">Release</label>
             <div class="col-sm-3 form-group">
-                <input class="form-control"  type="text" [ngModel]="releaseVersionModel" (change)="releaseVersionModel=$event.target.value"/>                 
+                <!-- <input class="form-control"  type="text" [ngModel]="releaseVersionModel" (change)="releaseVersionModel=$event.target.value"/>-->
+                <ng-select [ngModel]="releaseVersionModel" [options]="releaseVersions" (selected)="onChangeReleaseVersion($event)">
+                </ng-select>
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">Start date</label>
             <div class="col-sm-3">
                 <input class="form-control" type="date" #startDate (change)="onInputChange(startDate.value, 'startDate')">
+                <!-- <input class="form-control" readonly type="text" value="{{startDate}}" /> -->
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">End date</label>
             <div class="col-sm-3">
                 <input class="form-control" type="date" #endDate (change)="onInputChange(endDate.value, 'endDate')">
+                <!-- <input class="form-control" readonly type="text" value="{{endDate}}" /> -->
             </div>
         </div>
         <div class="form-group row">

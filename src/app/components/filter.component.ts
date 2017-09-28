@@ -3,6 +3,7 @@ import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'ang
 import { SelectModule } from 'angular2-select';
 import { TranserData } from '../services/transerData.service';
 import { DataService } from '../services/dataServices';
+import { Util } from '../utils/util';
 var config = require('../json/config.json');
 
 @Component({
@@ -11,9 +12,11 @@ var config = require('../json/config.json');
 })
 export class Filter implements OnInit {
     static get parameters() {
-        return [[TranserData], [DataService]];
+        return [[TranserData], [DataService], [Util]];
     }
-    releaseVersionModel: string = '1.0';
+    releaseSelected: any;
+    releaseVersions = [];
+    releaseVersionModel: string;
     reposModel: string[];
     repos: IMultiSelectOption[];
     branchesModel: string[];
@@ -23,12 +26,12 @@ export class Filter implements OnInit {
     enableDepenRepo = false;
 
     startDate; endDate;
-    onInputChange(value: string, key: string) {
+    onInputChange(value: string, key: string) {      
         this[key] = value;
     }
     generateChart() {
         let filterModel = {};
-        filterModel['releaseVersionModel'] = this.releaseVersionModel;
+        filterModel['releaseVersionModel'] = this.releaseSelected["release_verson"];
         filterModel['startDate'] = this.startDate;
         filterModel['endDate'] = this.endDate;
         filterModel['reposModel'] = this.reposModel;
@@ -58,30 +61,68 @@ export class Filter implements OnInit {
     }
 
     ngOnInit() {
-        this.repos = [];
-        let rps = [];
-        this._dataService.getAllRepositoties().subscribe(res => {
-            res.forEach(r => {
-                rps.push({ "id": r, "name": r })
-            });
-            this.repos = rps;
+        // this.repos = [];
+        //let rps = [];
+        // this._dataService.getAllRepositoties().subscribe(res => {
+        //     res.forEach(r => {
+        //         rps.push({ "id": r, "name": r })
+        //     });
+        //     this.repos = rps;
+        // },
+        //     error => alert("Error: Can't get repositories !"),
+        //     () => {
+        //         console.log("Finish");
+        //     }
+        // );
+        //this.branches = [];
+
+        //users       
+        this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
+            this.users = res;
         },
-            error => alert("Error: Can't get repositories !"),
+            error => alert("Error: Can't get users data by repositories !"),
             () => {
                 console.log("Finish");
             }
         );
-        this.branches = [];
-        
-         //users       
-         this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
-             this.users = res;            
-         },
-             error => alert("Error: Can't get users data by repositories !"),
-             () => {
-                 console.log("Finish");
-             }
-         );
+        // list release
+        this._dataService.getListRelease().subscribe(res => {
+            console.log(res);
+            this.makeUpReleaseData(res);
+        },
+            error => alert("Error: Can't get list release !"),
+            () => {
+                console.log("Finish");
+            }
+        );
+    }
+    makeUpReleaseData(res) {
+        let listData = [];
+        if (res) {
+            res.forEach(item => {
+                listData.push({ label: item["release_name"], value: JSON.stringify(item) });
+            });
+        }
+        this.releaseVersions = listData;
+    }
+    onChangeReleaseVersion(item) {       
+        this.releaseSelected = JSON.parse(item.value);
+        this.releaseVersionModel = item.value;
+
+        //format and set start and end date        
+        this.startDate = this._util.convertDate(this.releaseSelected["start_date"]);
+        this.endDate = this._util.convertDate(this.releaseSelected["end_date"]);
+
+        // update repo by release        
+        if (this.releaseSelected['services']) {
+            let rps = []
+            this.releaseSelected['services'].forEach(service => {
+                rps.push({ "id": service['repo'], "name": service['repo'] });
+
+            });
+            this.repos = rps;
+        }
+
     }
     onRepoChange() {
         console.log(this.reposModel);
@@ -97,7 +138,7 @@ export class Filter implements OnInit {
             () => {
                 console.log("Finish");
             }
-        );       
+        );
 
     }
     onChange() {
@@ -126,5 +167,5 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(private _transferData: TranserData, private _dataService: DataService) { }
+    constructor(private _transferData: TranserData, private _dataService: DataService, private _util: Util) { }
 }

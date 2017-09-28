@@ -16,7 +16,8 @@ import { Filter } from './components/filter.component';
 import { DataService } from './services/dataServices';
 import { TranserData } from './services/transerData.service';
 import { StackedChartCommitDefect } from './charts/stacked-chart-commit-defect';
-import {SelectModule} from 'angular2-select';
+import { SelectModule } from 'angular2-select';
+import { Util } from './utils/util'
 
 declare var require: any;
 export function highchartsFactory() {
@@ -37,14 +38,14 @@ export function highchartsFactory() {
     Filter
   ],
   imports: [
-    MultiselectDropdownModule,    
+    MultiselectDropdownModule,
     SelectModule,
     BrowserModule,
     FormsModule,
     HttpModule,
     ChartModule
   ],
-  providers: [{ provide: HighchartsStatic, useFactory: highchartsFactory },DataService, TranserData],
+  providers: [{ provide: HighchartsStatic, useFactory: highchartsFactory }, DataService, TranserData, Util],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

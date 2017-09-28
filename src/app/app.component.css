@@ -39,3 +39,6 @@ ss-multiselect-dropdown .dropdown-toggle  .caret
     right: 10px;
     top: 15px;
 }
+.back-btn{
+    cursor: pointer;
+}
