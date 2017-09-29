@@ -2,10 +2,11 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+var config = require('../json/config.json');
 
 @Injectable()
 export class DataService {
-  private BASE_URL = 'http://127.0.0.1:5000';  // URL to web api
+  private BASE_URL = config['api_url'];  // URL to web api
 
   private GERRIT_SERVER = 'http://52.53.239.241:8080/Nutanix'; // URL gerrit server
   private GERRIT_USER = 'test1';
