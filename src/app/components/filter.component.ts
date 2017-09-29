@@ -31,15 +31,25 @@ export class Filter implements OnInit {
     generateChart() {
         let filterModel = {};
         filterModel['releaseVersionModel'] = this.releaseSelected["release_verson"];
-        filterModel['startDate'] = this.startDate;
-        filterModel['endDate'] = this.endDate;
-        filterModel['reposModel'] = this.reposModel;
-        filterModel['branchesModel'] = this.branchesModel;
-        filterModel['usersModel'] = this.usersModel;
+        if (this.startDate && this.startDate != "") {
+            filterModel['startDate'] = this.startDate;
+        }
+        if (this.endDate && this.endDate != "") {
+            filterModel['endDate'] = this.endDate;
+        }
+        if (this.reposModel && this.reposModel.length > 0) {
+            filterModel['reposModel'] = this.reposModel;
+        }
+        if (this.branchesModel && this.branchesModel.length > 0) {
+            filterModel['branchesModel'] = this.branchesModel;
+        }
+        if (this.usersModel && this.usersModel.length > 0) {
+            filterModel['usersModel'] = this.usersModel;
+        }
         console.log(filterModel);
-        if (typeof Storage !== "undefined") {                       
+        if (typeof Storage !== "undefined") {
             let dataStoraged = sessionStorage.getItem(JSON.stringify(filterModel));
-            if (dataStoraged != null) {               
+            if (dataStoraged != null) {
                 let datas = JSON.parse(dataStoraged);
                 this._transferData.updateChartFileChangeCommitData(datas[0]);
                 this._transferData.updateChartJiraStatusCommitData(datas[1]);
@@ -47,13 +57,13 @@ export class Filter implements OnInit {
                 this._transferData.updateJiraTypeOfCommitData(datas[3]);
                 this._transferData.updateHeatMapOfCommitData(datas[4]);
                 this._transferData.updateJiraDefectOfCommitData(datas[5]);
-            }else{
+            } else {
                 this.callApi(filterModel);
             }
-        }       
+        }
 
     }
-    callApi(filterModel){
+    callApi(filterModel) {
         this._transferData.updateLoadingGraph1(true);
         this._transferData.updateLoadingGraph2(true);
         this._transferData.updateLoadingGraph3(true);
@@ -80,7 +90,7 @@ export class Filter implements OnInit {
     }
 
     ngOnInit() {
-        
+
         //users       
         this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
             this.users = res;
