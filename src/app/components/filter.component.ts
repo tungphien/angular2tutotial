@@ -125,8 +125,8 @@ export class Filter implements OnInit {
         this.releaseVersionModel = item.value;
 
         //format and set start and end date        
-        this.startDate = this._util.convertDate(this.releaseSelected["start_date"]);
-        this.endDate = this._util.convertDate(this.releaseSelected["end_date"]);
+        this.startDate = this.releaseSelected["start_date"];
+        this.endDate = this.releaseSelected["end_date"];
 
         // update repo by release        
         if (this.releaseSelected['services']) {

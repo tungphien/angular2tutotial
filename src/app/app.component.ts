@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TranserData } from './services/transerData.service';
 import { DataService } from './services/dataServices';
+import last from 'lodash/last';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent {
   title = 'app';
   chartData: any;
   constructor(private _transferData: TranserData, private _dataService: DataService) { 
+    console.log(last([1, 2, 3]));
     // let defaultFilter = {};
     // defaultFilter['startDate'] = '';
     // defaultFilter['endDate'] = '';
