@@ -4,7 +4,6 @@ import { SelectModule } from 'angular2-select';
 import { TranserData } from '../services/transerData.service';
 import { DataService } from '../services/dataServices';
 import { Util } from '../utils/util';
-var config = require('../json/config.json');
 
 @Component({
     selector: 'filter-component',

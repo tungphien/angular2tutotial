@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-var config = require('../json/config.json');
+var config = require('./../../config.json');
 
 @Injectable()
 export class DataService {
