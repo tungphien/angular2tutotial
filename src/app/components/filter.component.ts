@@ -25,7 +25,7 @@ export class Filter implements OnInit {
     enableDepenRepo = false;
 
     startDate; endDate;
-    onInputChange(value: string, key: string) {      
+    onInputChange(value: string, key: string) {
         this[key] = value;
     }
     generateChart() {
@@ -37,6 +37,23 @@ export class Filter implements OnInit {
         filterModel['branchesModel'] = this.branchesModel;
         filterModel['usersModel'] = this.usersModel;
         console.log(filterModel);
+        if (typeof Storage !== "undefined") {                       
+            let dataStoraged = sessionStorage.getItem(JSON.stringify(filterModel));
+            if (dataStoraged != null) {               
+                let datas = JSON.parse(dataStoraged);
+                this._transferData.updateChartFileChangeCommitData(datas[0]);
+                this._transferData.updateChartJiraStatusCommitData(datas[1]);
+                this._transferData.updateLineChangeOfCommitData(datas[2]);
+                this._transferData.updateJiraTypeOfCommitData(datas[3]);
+                this._transferData.updateHeatMapOfCommitData(datas[4]);
+                this._transferData.updateJiraDefectOfCommitData(datas[5]);
+            }else{
+                this.callApi(filterModel);
+            }
+        }       
+
+    }
+    callApi(filterModel){
         this._transferData.updateLoadingGraph1(true);
         this._transferData.updateLoadingGraph2(true);
         this._transferData.updateLoadingGraph3(true);
@@ -50,31 +67,20 @@ export class Filter implements OnInit {
             this._transferData.updateJiraTypeOfCommitData(res[3]);
             this._transferData.updateHeatMapOfCommitData(res[4]);
             this._transferData.updateJiraDefectOfCommitData(res[5]);
+
+            if (typeof Storage !== "undefined") {
+                sessionStorage.setItem(JSON.stringify(filterModel), JSON.stringify(res));
+            }
         },
             error => alert("Error: Can't get chart data for graph"),
             () => {
                 console.log("Finish");
             }
         );
-
     }
 
     ngOnInit() {
-        // this.repos = [];
-        //let rps = [];
-        // this._dataService.getAllRepositoties().subscribe(res => {
-        //     res.forEach(r => {
-        //         rps.push({ "id": r, "name": r })
-        //     });
-        //     this.repos = rps;
-        // },
-        //     error => alert("Error: Can't get repositories !"),
-        //     () => {
-        //         console.log("Finish");
-        //     }
-        // );
-        //this.branches = [];
-
+        
         //users       
         this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
             this.users = res;
@@ -104,7 +110,7 @@ export class Filter implements OnInit {
         }
         this.releaseVersions = listData;
     }
-    onChangeReleaseVersion(item) {       
+    onChangeReleaseVersion(item) {
         this.releaseSelected = JSON.parse(item.value);
         this.releaseVersionModel = item.value;
 
