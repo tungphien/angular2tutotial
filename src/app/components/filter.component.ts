@@ -4,6 +4,7 @@ import { SelectModule } from 'angular2-select';
 import { TranserData } from '../services/transerData.service';
 import { DataService } from '../services/dataServices';
 import { Util } from '../utils/util';
+import { ToasterService } from 'angular2-toaster';
 
 @Component({
     selector: 'filter-component',
@@ -11,7 +12,7 @@ import { Util } from '../utils/util';
 })
 export class Filter implements OnInit {
     static get parameters() {
-        return [[TranserData], [DataService], [Util]];
+        return [[TranserData], [DataService], [Util], [ToasterService]];
     }
     releaseSelected: any;
     releaseVersions = [];
@@ -85,12 +86,11 @@ export class Filter implements OnInit {
     }
 
     ngOnInit() {
-
         //users       
         this._dataService.getUsesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
             this.users = res;
         },
-            error => alert("Error: Can't get users data by repositories !"),
+            error => this._toasterService.pop('error', 'Error', "Can't get users data by repositories !"),
             () => {
                 console.log("Finish");
             }
@@ -100,7 +100,7 @@ export class Filter implements OnInit {
             console.log(res);
             this.makeUpReleaseData(res);
         },
-            error => alert("Error: Can't get list release !"),
+            error => this._toasterService.pop('error', 'Error', "Can't get list release !"),
             () => {
                 console.log("Finish");
             }
@@ -115,7 +115,7 @@ export class Filter implements OnInit {
         }
         this.releaseVersions = listData;
     }
-    onChangeReleaseVersion(item) {
+    onChangeReleaseVersion(item) {               
         this.releaseSelected = JSON.parse(item.value);
         this.releaseVersionModel = item.value;
 
@@ -144,7 +144,7 @@ export class Filter implements OnInit {
             if (res.length > 0)
                 this.enableDepenRepo = true;
         },
-            error => alert("Error: Can't get braches data by repositories !"),
+            error => this._toasterService.pop('error', 'Error', "Can't get braches data by repositories !"),
             () => {
                 console.log("Finish");
             }
@@ -177,5 +177,7 @@ export class Filter implements OnInit {
         defaultTitle: 'Select',
         allSelected: 'All selected',
     };
-    constructor(private _transferData: TranserData, private _dataService: DataService, private _util: Util) { }
+    constructor(private _transferData: TranserData, private _dataService: DataService, private _util: Util, private _toasterService: ToasterService) {
+
+    }
 }

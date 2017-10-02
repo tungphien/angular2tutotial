@@ -19,6 +19,8 @@ import { TranserData } from './services/transerData.service';
 import { StackedChartCommitDefect } from './charts/stacked-chart-commit-defect';
 import { SelectModule } from 'angular2-select';
 import { Util } from './utils/util'
+import {ToasterModule, ToasterService} from 'angular2-toaster';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 declare var require: any;
 export function highchartsFactory() {
@@ -45,7 +47,9 @@ export function highchartsFactory() {
     BrowserModule,
     FormsModule,
     HttpModule,
-    ChartModule
+    ChartModule,
+    ToasterModule,
+    BrowserAnimationsModule
   ],
   providers: [{ provide: HighchartsStatic, useFactory: highchartsFactory }, DataService, TranserData, Util],
   bootstrap: [AppComponent]
