@@ -6,7 +6,7 @@ import { DataService } from '../services/dataServices';
     selector: 'stacked-chart-commit-new-enhancement',
     template: `
     <div class="chart-container">
-    <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
+       <loading [isLoading]="isLoading"></loading>
        <chart [options]="options"></chart>
        </div>
    `
@@ -78,10 +78,10 @@ export class StackedChartCommitNewEnhancement implements OnInit {
 
     ngOnInit(): void {
         this.options = this.bindChartOption(null);
-        this._transferData.loadingGraph4DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.loadingDataSubject.subscribe(res => { this.isLoading = res; });
         this._transferData.jiraTypeOfCommitDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res);
-            this.isLoading = false;
+            this._transferData.updateLoadingGraph(false);
         });
     }
 

@@ -32,28 +32,8 @@ export class TranserData {
     }
 
     // update loading
-    public loadingGraph1DataSubject = new Subject<any>();
-    updateLoadingGraph1(booleanValue) {
-      this.loadingGraph1DataSubject.next(booleanValue);
-    }
-    public loadingGraph2DataSubject = new Subject<any>();
-    updateLoadingGraph2(booleanValue) {
-      this.loadingGraph2DataSubject.next(booleanValue);
-    }
-    public loadingGraph3DataSubject = new Subject<any>();
-    updateLoadingGraph3(booleanValue) {
-      this.loadingGraph3DataSubject.next(booleanValue);
-    }
-    public loadingGraph4DataSubject = new Subject<any>();
-    updateLoadingGraph4(booleanValue) {
-      this.loadingGraph4DataSubject.next(booleanValue);
-    }
-    public loadingGraph5DataSubject = new Subject<any>();
-    updateLoadingGraph5(booleanValue) {
-      this.loadingGraph5DataSubject.next(booleanValue);
-    }
-    public loadingGraph6DataSubject = new Subject<any>();
-    updateLoadingGraph6(booleanValue) {
-      this.loadingGraph6DataSubject.next(booleanValue);
-    }
+    public loadingDataSubject = new Subject<any>();
+    updateLoadingGraph(booleanValue) {
+      this.loadingDataSubject.next(booleanValue);
+    }    
 }

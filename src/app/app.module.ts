@@ -13,6 +13,7 @@ import { StackedChartCommitSize } from './charts/stacked-chart-commit-size';
 import { StackedChartCommitNewEnhancement } from './charts/stacked-chart-commit-newfeature-enhancement';
 import { HeatMapChart } from './charts/heat-map-chart';
 import { Filter } from './components/filter.component';
+import { Loading } from './components/loading.component';
 import { DataService } from './services/dataServices';
 import { TranserData } from './services/transerData.service';
 import { StackedChartCommitDefect } from './charts/stacked-chart-commit-defect';
@@ -35,7 +36,8 @@ export function highchartsFactory() {
     StackedChartCommitNewEnhancement,
     HeatMapChart,
     StackedChartCommitDefect,
-    Filter
+    Filter,
+    Loading
   ],
   imports: [
     MultiselectDropdownModule,

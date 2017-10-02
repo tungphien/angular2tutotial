@@ -6,7 +6,7 @@ import { DataService } from '../services/dataServices';
     selector: 'stacked-chart-commit-defect',
     template: `
     <div class="chart-container">
-    <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
+       <loading [isLoading]="isLoading"></loading>
        <chart [options]="options"></chart>
        </div>
    `
@@ -78,10 +78,10 @@ export class StackedChartCommitDefect implements OnInit {
 
     ngOnInit(): void {
         this.options = this.bindChartOption(null);
-        this._transferData.loadingGraph6DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.loadingDataSubject.subscribe(res => { this.isLoading = res; });
         this._transferData.jiraDefectOfCommitDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res);
-            this.isLoading = false;
+            this._transferData.updateLoadingGraph(false);
         });
     }
 

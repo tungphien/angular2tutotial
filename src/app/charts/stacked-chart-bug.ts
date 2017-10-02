@@ -6,7 +6,7 @@ import { TranserData } from '../services/transerData.service';
     selector: 'stacked-chart-bug',
     template: `
         <div class="chart-container">
-            <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
+            <loading [isLoading]="isLoading"></loading>
             <chart id="stacked-chart-bug" [options]="options"></chart>
        </div>
    `
@@ -77,10 +77,10 @@ export class StackedChartBug implements OnInit {
     }
     ngOnInit(): void {
         this.options = this.bindChartOption(null);
-        this._transferData.loadingGraph2DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.loadingDataSubject.subscribe(res => { this.isLoading = res; });
         this._transferData.jiraStatusDataSubject.subscribe(res => {
             this.options = this.bindChartOption(res);
-            this.isLoading = false;
+            this._transferData.updateLoadingGraph(false);
         });
     }
     constructor(private _transferData: TranserData, private _dataService: DataService) { }

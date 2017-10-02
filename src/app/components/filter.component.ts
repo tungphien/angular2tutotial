@@ -64,12 +64,7 @@ export class Filter implements OnInit {
 
     }
     callApi(filterModel) {
-        this._transferData.updateLoadingGraph1(true);
-        this._transferData.updateLoadingGraph2(true);
-        this._transferData.updateLoadingGraph3(true);
-        this._transferData.updateLoadingGraph4(true);
-        this._transferData.updateLoadingGraph5(true);
-        this._transferData.updateLoadingGraph6(true);
+        this._transferData.updateLoadingGraph(true);
         this._dataService.getChartData(JSON.stringify(filterModel)).subscribe(res => {
             this._transferData.updateChartFileChangeCommitData(res[0]);
             this._transferData.updateChartJiraStatusCommitData(res[1]);

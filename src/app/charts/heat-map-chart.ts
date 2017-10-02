@@ -6,7 +6,7 @@ import { DataService } from '../services/dataServices';
     selector: 'heat-map-chart',
     template: `
     <div class="chart-container">
-        <img *ngIf="isLoading" class="loading" src="./assets/images/loading.gif"/>
+        <loading [isLoading]="isLoading"></loading>
         <a *ngIf="historyResponses.length>1" class="back-btn" (click)="backButtonClick()" title="Back to previous chart">Back</a>
         <chart [options]="options"></chart>
     </div>
@@ -15,9 +15,8 @@ import { DataService } from '../services/dataServices';
 export class HeatMapChart implements OnInit {
     private isLoading = false;
     private repoName = "";
-    private historyResponses = [];   
+    private historyResponses = [];
     backButtonClick() {
-        console.log("History:", this.historyResponses);
         this.historyResponses.pop();
         let dataRes = this.historyResponses[this.historyResponses.length - 1];
         if (typeof dataRes['repoName'] == 'undefined') {
@@ -60,8 +59,6 @@ export class HeatMapChart implements OnInit {
                 }
             }
         }
-        console.log("clickableMap", clickableMap);
-
 
         return {
             credits: {
@@ -122,7 +119,7 @@ export class HeatMapChart implements OnInit {
                     },
                     events: {
                         click: function (e) {
-                            if ($this.getClickAbleFromChart(e.point.x, e.point.y, e.point.series.userOptions.clickableData)) {                               
+                            if ($this.getClickAbleFromChart(e.point.x, e.point.y, e.point.series.userOptions.clickableData)) {
                                 $this.isLoading = true;
                                 let filterModel = {
                                     "repoName": e.point.series.yAxis.categories[e.point.y],
@@ -166,12 +163,12 @@ export class HeatMapChart implements OnInit {
         this.drawChart("");
         let categories = [];
         let series = [];
-        this._transferData.loadingGraph5DataSubject.subscribe(res => { this.isLoading = true });
+        this._transferData.loadingDataSubject.subscribe(res => { this.isLoading = res; });
         this._transferData.heatmapOfCommitDataSubject.subscribe(res => {
             let makeUpdata = { 'chartData': res, 'repoName': '' };
             this.options = this.bindChartOption(makeUpdata);
-            this.isLoading = false;
-            this.historyResponses=[];
+            this._transferData.updateLoadingGraph(false);
+            this.historyResponses = [];
             this.historyResponses.push(makeUpdata);
         });
     }
