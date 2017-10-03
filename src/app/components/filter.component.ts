@@ -23,11 +23,17 @@ export class Filter implements OnInit {
     branches: IMultiSelectOption[];
     usersModel: string[];
     users: IMultiSelectOption[];
-    enableDepenRepo = false;
 
     startDate; endDate;
     onInputChange(value: string, key: string) {
         this[key] = value;
+    }
+    isValidForm() {
+        let isValid = true;
+        if (this.releaseVersionModel == null || this.releaseVersionModel == "") {
+            isValid = false;
+        }
+        return isValid;
     }
     generateChart() {
         let filterModel = {};
@@ -115,7 +121,7 @@ export class Filter implements OnInit {
         }
         this.releaseVersions = listData;
     }
-    onChangeReleaseVersion(item) {               
+    onChangeReleaseVersion(item) {
         this.releaseSelected = JSON.parse(item.value);
         this.releaseVersionModel = item.value;
 
@@ -136,20 +142,24 @@ export class Filter implements OnInit {
     }
     onRepoChange() {
         console.log(this.reposModel);
-        this.enableDepenRepo = false;
         //Branches
         this.branchesModel = [];
-        this._dataService.getBranchesByRepo(JSON.stringify(this.reposModel)).subscribe(res => {
-            this.branches = res;
-            if (res.length > 0)
-                this.enableDepenRepo = true;
-        },
-            error => this._toasterService.pop('error', 'Error', "Can't get braches data by repositories !"),
-            () => {
-                console.log("Finish");
-            }
-        );
-
+        let branchesTemp = [];
+        console.log(this.releaseSelected);
+        if (this.releaseSelected && this.releaseSelected['services']) {
+            this.releaseSelected['services'].forEach(srv => {
+                this.reposModel.forEach(rp => {
+                    if (srv['repo'] == rp) {
+                        Object.keys(srv['branch']).map(function (item, index) {
+                            console.log(item, index);
+                            branchesTemp.push({ "id": rp + "#" + item, "name": "[" + rp + "] " + item });
+                        });
+                    }
+                });
+            });
+        }
+        debugger;
+        this.branches = branchesTemp;
     }
     onChange() {
         console.log(this.reposModel);

@@ -26,7 +26,7 @@
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">Branches</label>
             <div class="col-sm-3">
-                <ss-multiselect-dropdown [disabled]="!enableDepenRepo" [options]="branches" [(ngModel)]="branchesModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
+                <ss-multiselect-dropdown [disabled]="branches==null || (branches!=null && branches.length==0)" [options]="branches" [(ngModel)]="branchesModel" [texts]="myTexts" [settings]="mySettings" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
             </div>
             <label for="example-text-input" class="col-sm-1 col-form-label">Users</label>
             <div class="col-sm-3">
@@ -35,7 +35,7 @@
         </div>
 
         <div class="row text-center">
-            <button [disabled]="releaseVersionModel==null || releaseVersionModel==''" type="button" class="btn btn-primary" (click)="generateChart()">Generate Chart</button>
+            <button [disabled]="!isValidForm()" type="button" class="btn btn-primary" (click)="generateChart()">Generate Chart</button>
         </div>
     </div>
 
